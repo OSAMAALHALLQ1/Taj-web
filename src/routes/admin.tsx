@@ -409,10 +409,14 @@ function AdminPage() {
 
         if (error) throw error;
 
-        const updated = [...items];
-        updated[editingItem.index] = itemToUpdate;
-        setItems(updated);
-        localStorage.setItem("taj_menu_items", JSON.stringify(updated));
+        // Find actual index in items array to update state correctly
+        const actualIndex = items.findIndex(it => it.id === itemToUpdate.id);
+        if (actualIndex > -1) {
+          const updated = [...items];
+          updated[actualIndex] = itemToUpdate;
+          setItems(updated);
+          localStorage.setItem("taj_menu_items", JSON.stringify(updated));
+        }
         
         setEditingItem(null);
         alert("تم تعديل الصنف في قاعدة البيانات بنجاح!");
@@ -423,32 +427,34 @@ function AdminPage() {
     }
   };
 
-  const handleDeleteItem = async (index: number) => {
-    const itemToDelete = items[index];
-    if (!itemToDelete.id) {
-      const updated = items.filter((_, idx) => idx !== index);
-      setItems(updated);
-      localStorage.setItem("taj_menu_items", JSON.stringify(updated));
-      return;
-    }
+  const handleDeleteItem = async (filteredIndex: number) => {
+    const itemToDelete = filteredItems[filteredIndex];
+    if (!itemToDelete) return;
 
     if (confirm(`هل أنت متأكد من رغبتك في حذف صنف "${itemToDelete.title}"؟`)) {
-      try {
-        const { error } = await supabase
-          .from("menu_items")
-          .delete()
-          .eq("id", itemToDelete.id);
+      if (itemToDelete.id) {
+        try {
+          const { error } = await supabase
+            .from("menu_items")
+            .delete()
+            .eq("id", itemToDelete.id);
 
-        if (error) throw error;
-
-        const updated = items.filter((_, idx) => idx !== index);
-        setItems(updated);
-        localStorage.setItem("taj_menu_items", JSON.stringify(updated));
-        alert("تم حذف الصنف من قاعدة البيانات.");
-      } catch (err) {
-        console.error(err);
-        alert("فشل حذف الصنف من قاعدة البيانات.");
+          if (error) throw error;
+          alert("تم حذف الصنف من قاعدة البيانات.");
+        } catch (err) {
+          console.error(err);
+          alert("فشل حذف الصنف من قاعدة البيانات.");
+          return;
+        }
       }
+
+      // Update local state by filtering out the deleted item
+      const updated = items.filter(it => {
+        if (itemToDelete.id && it.id === itemToDelete.id) return false;
+        return !(it.title === itemToDelete.title && it.branch === itemToDelete.branch && it.category === itemToDelete.category);
+      });
+      setItems(updated);
+      localStorage.setItem("taj_menu_items", JSON.stringify(updated));
     }
   };
 
@@ -927,14 +933,14 @@ function AdminPage() {
                     ))}
                   </div>
 
-                  <div 
+                  <label 
                     onDragOver={(e) => e.preventDefault()}
                     onDrop={(e) => {
                       e.preventDefault();
                       handleMediaUpload(e.dataTransfer.files);
                     }}
-                    onClick={() => document.getElementById("media-gallery-upload-input")?.click()}
-                    className="mt-8 p-8 border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-2xl text-center text-xs text-gray-400 font-light transition-all cursor-pointer bg-white/[0.01] hover:bg-white/[0.02]"
+                    htmlFor="media-gallery-upload-input"
+                    className="mt-8 p-8 border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-2xl text-center text-xs text-gray-400 font-light transition-all cursor-pointer bg-white/[0.01] hover:bg-white/[0.02] block"
                   >
                     <input 
                       type="file" 
@@ -955,7 +961,7 @@ function AdminPage() {
                         <p className="text-[10px] text-gray-500">أو اضغط لتصفح الملفات من جهازك (الحد الأقصى 5 ميجابايت)</p>
                       </>
                     )}
-                  </div>
+                  </label>
                 </div>
               </div>
             )}
@@ -1091,9 +1097,9 @@ function AdminPage() {
                 <label className="block text-[10px] text-gray-400 font-bold mb-1">صورة الصنف</label>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div 
-                    onClick={() => document.getElementById("add-item-image-input")?.click()}
-                    className="border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-xl p-4 text-center cursor-pointer bg-white/[0.01] hover:bg-white/[0.02] flex flex-col items-center justify-center transition-all h-24"
+                  <label 
+                    htmlFor="add-item-image-input"
+                    className="border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-xl p-4 text-center cursor-pointer bg-white/[0.01] hover:bg-white/[0.02] flex flex-col items-center justify-center transition-all h-24 block"
                   >
                     <input 
                       type="file" 
@@ -1123,7 +1129,7 @@ function AdminPage() {
                         <span className="text-[10px] text-zinc-300">رفع صورة من الجهاز</span>
                       </>
                     )}
-                  </div>
+                  </label>
 
                   <div className="flex flex-col justify-between">
                     <input 
@@ -1287,9 +1293,9 @@ function AdminPage() {
                 <label className="block text-[10px] text-gray-400 font-bold mb-1">صورة الصنف</label>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div 
-                    onClick={() => document.getElementById("edit-item-image-input")?.click()}
-                    className="border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-xl p-4 text-center cursor-pointer bg-white/[0.01] hover:bg-white/[0.02] flex flex-col items-center justify-center transition-all h-24"
+                  <label 
+                    htmlFor="edit-item-image-input"
+                    className="border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-xl p-4 text-center cursor-pointer bg-white/[0.01] hover:bg-white/[0.02] flex flex-col items-center justify-center transition-all h-24 block"
                   >
                     <input 
                       type="file" 
@@ -1325,7 +1331,7 @@ function AdminPage() {
                         <span className="text-[10px] text-zinc-300">رفع صورة جديدة</span>
                       </>
                     )}
-                  </div>
+                  </label>
 
                   <div className="flex flex-col justify-between">
                     <input 
