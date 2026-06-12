@@ -438,7 +438,7 @@ export const AnimatedLogoLoader: React.FC<LoaderProps> = ({ isLoading, theme = "
             </g>
           </svg>
         ) : (
-          <svg viewBox="0 0 3061.4" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 3061.4 3061.4" xmlns="http://www.w3.org/2000/svg">
             <g className="cafe-bouncy-group">
               
 <style type="text/css" dangerouslySetInnerHTML={{ __html: `
