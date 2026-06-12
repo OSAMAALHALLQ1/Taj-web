@@ -5,6 +5,7 @@ import {
   Trash2, X, MapPin, Phone, User, Clock, ClipboardList, Info 
 } from "lucide-react";
 import { categoryImages, menuData, type Branch, type MenuItem } from "@/data/menu";
+import { supabase } from "@/lib/supabase";
 
 import pricingData from "../data/pricing.json";
 
@@ -51,37 +52,82 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
   });
   const [areaSearch, setAreaSearch] = useState("");
 
-  // Load custom menu items from local storage with auto-update check
+  // Load custom menu items from Supabase with auto-update check and localStorage fallback
   useEffect(() => {
-    const saved = localStorage.getItem("taj_menu_items");
-    if (saved) {
+    async function loadMenuItems() {
       try {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length > 0) {
-          const hasNewItem = parsed.some((i) => i.title === "فرشوحة شاورما حبش" || i.title === "كريب شاورما مالح");
-          if (!hasNewItem) {
-            localStorage.setItem("taj_menu_items", JSON.stringify(menuData));
-            setItemsState(menuData);
-          } else {
-            setItemsState(parsed);
-          }
+        const { data, error } = await supabase
+          .from("menu_items")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) throw error;
+
+        if (data && data.length > 0) {
+          const mappedItems: MenuItem[] = data.map((item: any) => ({
+            branch: item.branch,
+            category: item.category,
+            title: item.title,
+            desc: item.desc_text || undefined,
+            price: item.price,
+            image: item.image || undefined
+          }));
+          setItemsState(mappedItems);
+        } else {
+          setItemsState(menuData);
         }
       } catch (e) {
-        console.error(e);
+        console.error("Error loading menu items from Supabase, falling back to localStorage:", e);
+        const saved = localStorage.getItem("taj_menu_items");
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              setItemsState(parsed);
+            }
+          } catch (e) {
+            setItemsState(menuData);
+          }
+        } else {
+          setItemsState(menuData);
+        }
       }
     }
+
+    loadMenuItems();
   }, []);
 
   // Fetch customizable WhatsApp number from settings
   const [whatsappNum, setWhatsappNum] = useState(whatsapp);
   useEffect(() => {
-    const key = branch === "restaurant" ? "taj_whatsapp_restaurant" : "taj_whatsapp_cafe";
-    const savedWhatsapp = localStorage.getItem(key);
-    if (savedWhatsapp) {
-      setWhatsappNum(savedWhatsapp);
-    } else {
-      setWhatsappNum(whatsapp);
+    async function loadWhatsappSetting() {
+      const key = branch === "restaurant" ? "taj_whatsapp_restaurant" : "taj_whatsapp_cafe";
+      try {
+        const { data, error } = await supabase
+          .from("settings")
+          .select("value")
+          .eq("key", key)
+          .single();
+
+        if (error) throw error;
+
+        if (data?.value) {
+          setWhatsappNum(data.value);
+        } else {
+          setWhatsappNum(whatsapp);
+        }
+      } catch (e) {
+        console.error("Error loading whatsapp from Supabase, falling back to localStorage:", e);
+        const savedWhatsapp = localStorage.getItem(key);
+        if (savedWhatsapp) {
+          setWhatsappNum(savedWhatsapp);
+        } else {
+          setWhatsappNum(whatsapp);
+        }
+      }
     }
+
+    loadWhatsappSetting();
   }, [branch, whatsapp]);
 
   // Switch to items view automatically when a search query is entered
@@ -321,10 +367,28 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
     const encodedText = encodeURIComponent(textMessage);
     const whatsappUrl = `https://wa.me/${whatsappNum}?text=${encodedText}`;
 
+    // Save order to Supabase
+    supabase.from("orders").insert({
+      order_ref: orderRef,
+      customer_name: orderForm.name.trim(),
+      customer_phone: orderForm.phone.trim(),
+      delivery_type: orderForm.deliveryType,
+      address: orderForm.deliveryType === "delivery" 
+        ? `${selectedArea?.area} - ${orderForm.detailedAddress.trim()}` 
+        : "استلام من الفرع",
+      items: cart,
+      subtotal: cartSubtotal,
+      delivery_fee: deliveryFee,
+      total: cartTotal,
+      notes: orderForm.notes.trim() || null
+    }).then(({ error }) => {
+      if (error) console.error("Error saving order to Supabase:", error);
+    });
+
     // Redirect to WhatsApp
     window.open(whatsappUrl, "_blank");
 
-    // Add to admin live logs in localStorage
+    // Add to admin live logs in localStorage (as fallback/local logging)
     const orderTime = new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit", second: "2-digit" }).split(" ")[0];
     const logKey = "taj_admin_live_orders_log";
     const existingLogs = JSON.parse(localStorage.getItem(logKey) || "[]");

@@ -1,6 +1,7 @@
 export type Branch = "restaurant" | "cafe";
 
 export interface MenuItem {
+  id?: string;
   branch: Branch;
   category: string;
   title: string;

@@ -7,6 +7,7 @@ import {
   ShoppingBag, HelpCircle, FileText, CheckCircle2, Search, X 
 } from "lucide-react";
 import { menuData, type MenuItem, type Branch } from "@/data/menu";
+import { supabase } from "@/lib/supabase";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -58,70 +59,111 @@ function AdminPage() {
     if (typeof window !== "undefined") {
       const logged = localStorage.getItem("taj_admin_logged_in") === "true";
       setAdminLoggedIn(logged);
-
-      // Load Settings
-      setRestaurantWhatsapp(localStorage.getItem("taj_whatsapp_restaurant") || "970590000001");
-      setCafeWhatsapp(localStorage.getItem("taj_whatsapp_cafe") || "970590000002");
-      setDeliveryFeeDefault(Number(localStorage.getItem("taj_delivery_fee") || "10"));
-
-      // Load Menu Items with auto-update check
-      const savedItems = localStorage.getItem("taj_menu_items");
-      if (savedItems) {
-        try {
-          const parsed = JSON.parse(savedItems);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            const hasNewItem = parsed.some((i: any) => i.title === "فرشوحة شاورما حبش" || i.title === "كريب شاورما مالح");
-            if (!hasNewItem) {
-              setItems(menuData);
-              localStorage.setItem("taj_menu_items", JSON.stringify(menuData));
-            } else {
-              setItems(parsed);
-            }
-          } else {
-            setItems(menuData);
-            localStorage.setItem("taj_menu_items", JSON.stringify(menuData));
-          }
-        } catch (e) {
-          setItems(menuData);
-          localStorage.setItem("taj_menu_items", JSON.stringify(menuData));
-        }
-      } else {
-        setItems(menuData);
-        localStorage.setItem("taj_menu_items", JSON.stringify(menuData));
-      }
-
-      // Load Live Orders Count
-      const savedOrdersCount = localStorage.getItem("taj_admin_live_orders_count");
-      if (savedOrdersCount) {
-        setLiveOrders(parseInt(savedOrdersCount));
-      } else {
-        localStorage.setItem("taj_admin_live_orders_count", "18");
-      }
-
-      // Load Live Carts Count
-      const savedCartsCount = localStorage.getItem("taj_admin_live_carts_count");
-      if (savedCartsCount) {
-        setLiveCarts(parseInt(savedCartsCount));
-      } else {
-        localStorage.setItem("taj_admin_live_carts_count", "3");
-      }
-
-      // Load Log events
-      const savedLogs = localStorage.getItem("taj_admin_live_orders_log");
-      if (savedLogs) {
-        setLiveActivity(JSON.parse(savedLogs));
-      } else {
-        const initialLogs = [
-          { time: "21:40", event: "عميل يتصفح منيو الشاورما بمطعم التاج" },
-          { time: "21:44", event: "تمت إضافة وجبة مشاوي التاج إلى السلة" },
-          { time: "21:50", event: "مستخدم يستعلم عن موقع فرع الكافيه بالرمال" },
-          { time: "21:52", event: "عميل يتصفح منيو ميلك شيك تاج مود" }
-        ];
-        setLiveActivity(initialLogs);
-        localStorage.setItem("taj_admin_live_orders_log", JSON.stringify(initialLogs));
-      }
     }
   }, []);
+
+  // Fetch all Supabase data when logged in
+  useEffect(() => {
+    if (!adminLoggedIn) return;
+
+    async function loadAdminData() {
+      // 1. Fetch Menu Items
+      try {
+        const { data: menuDataDb, error: menuError } = await supabase
+          .from("menu_items")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (menuError) throw menuError;
+
+        if (menuDataDb && menuDataDb.length > 0) {
+          const mappedItems: MenuItem[] = menuDataDb.map((item: any) => ({
+            id: item.id,
+            branch: item.branch,
+            category: item.category,
+            title: item.title,
+            desc: item.desc_text || undefined,
+            price: item.price,
+            image: item.image || undefined
+          }));
+          setItems(mappedItems);
+        } else {
+          setItems(menuData);
+        }
+      } catch (e) {
+        console.error("Error loading menu items from Supabase:", e);
+        setItems(menuData);
+      }
+
+      // 2. Fetch Settings
+      try {
+        const { data: settingsDb, error: settingsError } = await supabase
+          .from("settings")
+          .select("*");
+
+        if (settingsError) throw settingsError;
+
+        if (settingsDb) {
+          const restW = settingsDb.find(s => s.key === "taj_whatsapp_restaurant")?.value;
+          const cafeW = settingsDb.find(s => s.key === "taj_whatsapp_cafe")?.value;
+          const delF = settingsDb.find(s => s.key === "taj_delivery_fee")?.value;
+
+          if (restW) setRestaurantWhatsapp(restW);
+          if (cafeW) setCafeWhatsapp(cafeW);
+          if (delF) setDeliveryFeeDefault(Number(delF));
+        }
+      } catch (e) {
+        console.error("Error loading settings from Supabase:", e);
+      }
+    }
+
+    loadAdminData();
+  }, [adminLoggedIn]);
+
+  // Load and poll real orders from Supabase periodically
+  useEffect(() => {
+    if (adminLoggedIn) {
+      async function fetchOrders() {
+        try {
+          const { data, error } = await supabase
+            .from("orders")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+          if (error) throw error;
+
+          if (data) {
+            setLiveOrders(data.length);
+
+            // Map real orders to live activity logs
+            const realLogs = data.slice(0, 8).map((order: any) => {
+              const dateObj = new Date(order.created_at);
+              const timeStr = dateObj.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
+              const branchLabel = order.items?.[0]?.branch === "cafe" ? "تاج مود كافيه" : "مطعم التاج";
+              return {
+                time: timeStr,
+                event: `طلب مؤكد للعميل ${order.customer_name} في ${branchLabel} بقيمة ${order.total} ₪`
+              };
+            });
+
+            if (realLogs.length > 0) {
+              setLiveActivity(realLogs);
+            } else {
+              setLiveActivity([
+                { time: "00:00", event: "لا توجد طلبات حقيقية بقاعدة البيانات حالياً" }
+              ]);
+            }
+          }
+        } catch (e) {
+          console.error("Error polling orders:", e);
+        }
+      }
+
+      fetchOrders();
+      const interval = setInterval(fetchOrders, 15000); // Poll every 15 seconds
+      return () => clearInterval(interval);
+    }
+  }, [adminLoggedIn]);
 
   // Fluctuating live visitors count simulation
   useEffect(() => {
@@ -142,94 +184,212 @@ function AdminPage() {
         localStorage.setItem("taj_admin_live_carts_count", nextCount.toString());
       }, 9000);
 
-      // Add random logs occasionally to look lively
-      const simulatedLogEvents = [
-        "عميل يتصفح منيو الشاورما والبيتزا",
-        "مستخدم أضاف كريب نوتيلا دبل للسلة من فرع الكافيه",
-        "عميل يستعلم عن موقع فرع مطعم التاج",
-        "تمت إضافة شاورما عربية للسلة مع ملاحظات خاصة",
-        "عميل يتصفح منيو المشروبات الباردة والساخنة",
-        "مستخدم أضاف لفة كباب وسلطات للسلة بمطعم التاج",
-        "تم تصفح صفحة من نحن وقصة التاج"
-      ];
-
-      const logsTimer = setInterval(() => {
-        const now = new Date();
-        const timeStr = now.toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit" });
-        const randomEvent = simulatedLogEvents[Math.floor(Math.random() * simulatedLogEvents.length)];
-        
-        setLiveActivity((prev) => {
-          const next = [{ time: timeStr, event: randomEvent }, ...prev];
-          if (next.length > 8) next.pop();
-          localStorage.setItem("taj_admin_live_orders_log", JSON.stringify(next));
-          return next;
-        });
-      }, 15000);
-
       return () => {
         clearInterval(timer);
         clearInterval(cartsTimer);
-        clearInterval(logsTimer);
       };
     }
   }, [adminLoggedIn]);
 
-  // Synchronize Settings with LocalStorage
-  const handleSaveSettings = () => {
-    localStorage.setItem("taj_whatsapp_restaurant", restaurantWhatsapp.trim());
-    localStorage.setItem("taj_whatsapp_cafe", cafeWhatsapp.trim());
-    localStorage.setItem("taj_delivery_fee", deliveryFeeDefault.toString());
-    alert("تم حفظ إعدادات النظام وأرقام الفروع بنجاح!");
-  };
+  // Synchronize Settings with Supabase
+  const handleSaveSettings = async () => {
+    try {
+      const { error: errorRest } = await supabase
+        .from("settings")
+        .upsert({ key: "taj_whatsapp_restaurant", value: restaurantWhatsapp.trim() });
 
-  // Synchronize Menu Items with LocalStorage
-  const saveMenuItems = (newItems: MenuItem[]) => {
-    setItems(newItems);
-    localStorage.setItem("taj_menu_items", JSON.stringify(newItems));
+      const { error: errorCafe } = await supabase
+        .from("settings")
+        .upsert({ key: "taj_whatsapp_cafe", value: cafeWhatsapp.trim() });
+
+      const { error: errorFee } = await supabase
+        .from("settings")
+        .upsert({ key: "taj_delivery_fee", value: deliveryFeeDefault.toString() });
+
+      if (errorRest || errorCafe || errorFee) {
+        throw new Error("حدث خطأ أثناء حفظ الإعدادات في Supabase");
+      }
+
+      localStorage.setItem("taj_whatsapp_restaurant", restaurantWhatsapp.trim());
+      localStorage.setItem("taj_whatsapp_cafe", cafeWhatsapp.trim());
+      localStorage.setItem("taj_delivery_fee", deliveryFeeDefault.toString());
+
+      alert("تم حفظ إعدادات النظام وأرقام الفروع في قاعدة البيانات بنجاح!");
+    } catch (e) {
+      console.error(e);
+      alert("فشل حفظ الإعدادات في قاعدة البيانات، تم الحفظ محلياً في المتصفح فقط.");
+      localStorage.setItem("taj_whatsapp_restaurant", restaurantWhatsapp.trim());
+      localStorage.setItem("taj_whatsapp_cafe", cafeWhatsapp.trim());
+      localStorage.setItem("taj_delivery_fee", deliveryFeeDefault.toString());
+    }
   };
 
   // CRUD Actions
-  const handleAddItem = (e: React.FormEvent) => {
+  const handleAddItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newItem.title.trim() || !newItem.price.trim()) {
       alert("الرجاء إدخال اسم الوجبة والسعر على الأقل.");
       return;
     }
-    const updated = [newItem, ...items];
-    saveMenuItems(updated);
-    setShowAddModal(false);
-    setNewItem({
-      branch: "restaurant",
-      category: "شاورما",
-      title: "",
-      desc: "",
-      price: ""
-    });
-    alert("تمت إضافة الصنف بنجاح!");
+
+    try {
+      const { data, error } = await supabase
+        .from("menu_items")
+        .insert({
+          branch: newItem.branch,
+          category: newItem.category,
+          title: newItem.title.trim(),
+          desc_text: newItem.desc?.trim() || null,
+          price: newItem.price.trim(),
+          image: newItem.image || null
+        })
+        .select("*")
+        .single();
+
+      if (error) throw error;
+
+      if (data) {
+        const addedItem: MenuItem = {
+          id: data.id,
+          branch: data.branch,
+          category: data.category,
+          title: data.title,
+          desc: data.desc_text || undefined,
+          price: data.price,
+          image: data.image || undefined
+        };
+        const updated = [addedItem, ...items];
+        setItems(updated);
+        localStorage.setItem("taj_menu_items", JSON.stringify(updated));
+      }
+
+      setShowAddModal(false);
+      setNewItem({
+        branch: "restaurant",
+        category: "شاورما",
+        title: "",
+        desc: "",
+        price: ""
+      });
+      alert("تمت إضافة الصنف لقاعدة البيانات بنجاح!");
+    } catch (err) {
+      console.error(err);
+      alert("فشل إضافة الصنف لقاعدة البيانات.");
+    }
   };
 
-  const handleEditItem = (e: React.FormEvent) => {
+  const handleEditItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (editingItem) {
-      const updated = [...items];
-      updated[editingItem.index] = editingItem.item;
-      saveMenuItems(updated);
-      setEditingItem(null);
-      alert("تم تعديل الصنف بنجاح!");
+      const itemToUpdate = editingItem.item;
+      if (!itemToUpdate.id) {
+        alert("هذا الصنف لا يملك معرف فريد بقاعدة البيانات.");
+        return;
+      }
+
+      try {
+        const { error } = await supabase
+          .from("menu_items")
+          .update({
+            branch: itemToUpdate.branch,
+            category: itemToUpdate.category,
+            title: itemToUpdate.title.trim(),
+            desc_text: itemToUpdate.desc?.trim() || null,
+            price: itemToUpdate.price.trim(),
+            image: itemToUpdate.image || null
+          })
+          .eq("id", itemToUpdate.id);
+
+        if (error) throw error;
+
+        const updated = [...items];
+        updated[editingItem.index] = itemToUpdate;
+        setItems(updated);
+        localStorage.setItem("taj_menu_items", JSON.stringify(updated));
+        
+        setEditingItem(null);
+        alert("تم تعديل الصنف في قاعدة البيانات بنجاح!");
+      } catch (err) {
+        console.error(err);
+        alert("فشل تعديل الصنف في قاعدة البيانات.");
+      }
     }
   };
 
-  const handleDeleteItem = (index: number) => {
-    if (confirm("هل أنت متأكد من رغبتك في حذف هذا الصنف؟")) {
+  const handleDeleteItem = async (index: number) => {
+    const itemToDelete = items[index];
+    if (!itemToDelete.id) {
       const updated = items.filter((_, idx) => idx !== index);
-      saveMenuItems(updated);
+      setItems(updated);
+      localStorage.setItem("taj_menu_items", JSON.stringify(updated));
+      return;
+    }
+
+    if (confirm(`هل أنت متأكد من رغبتك في حذف صنف "${itemToDelete.title}"؟`)) {
+      try {
+        const { error } = await supabase
+          .from("menu_items")
+          .delete()
+          .eq("id", itemToDelete.id);
+
+        if (error) throw error;
+
+        const updated = items.filter((_, idx) => idx !== index);
+        setItems(updated);
+        localStorage.setItem("taj_menu_items", JSON.stringify(updated));
+        alert("تم حذف الصنف من قاعدة البيانات.");
+      } catch (err) {
+        console.error(err);
+        alert("فشل حذف الصنف من قاعدة البيانات.");
+      }
     }
   };
 
-  const handleResetMenu = () => {
-    if (confirm("تحذير: سيتم حذف كافة التعديلات واستعادة المنيو الأصلي. هل تريد الاستمرار؟")) {
-      saveMenuItems(menuData);
-      alert("تمت استعادة المنيو الأصلي بنجاح.");
+  const handleResetMenu = async () => {
+    if (confirm("تحذير: سيتم حذف كافة البيانات الحالية من قاعدة البيانات واستعادة قائمة الطعام الافتراضية. هل تريد الاستمرار؟")) {
+      try {
+        const { error: deleteError } = await supabase
+          .from("menu_items")
+          .delete()
+          .neq("branch", "force_delete_all");
+
+        if (deleteError) throw deleteError;
+
+        const seedRows = menuData.map((item) => ({
+          branch: item.branch,
+          category: item.category,
+          title: item.title,
+          desc_text: item.desc || null,
+          price: item.price,
+          image: item.image || null
+        }));
+
+        const { data: insertedData, error: insertError } = await supabase
+          .from("menu_items")
+          .insert(seedRows)
+          .select("*");
+
+        if (insertError) throw insertError;
+
+        if (insertedData) {
+          const mappedItems: MenuItem[] = insertedData.map((item: any) => ({
+            id: item.id,
+            branch: item.branch,
+            category: item.category,
+            title: item.title,
+            desc: item.desc_text || undefined,
+            price: item.price,
+            image: item.image || undefined
+          }));
+          setItems(mappedItems);
+          localStorage.setItem("taj_menu_items", JSON.stringify(mappedItems));
+        }
+
+        alert("تمت استعادة قائمة الطعام الافتراضية وإعادة تهيئتها بنجاح!");
+      } catch (err) {
+        console.error(err);
+        alert("فشل استعادة قائمة الطعام الافتراضية بقاعدة البيانات.");
+      }
     }
   };
 
