@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { categoryImages, menuData, type Branch, type MenuItem } from "@/data/menu";
 import { supabase } from "@/lib/supabase";
+import { AnimatedLogoLoader } from "./AnimatedLogoLoader";
 
 import pricingData from "../data/pricing.json";
 
@@ -27,6 +28,13 @@ interface CartItem {
 }
 
 export function MenuView({ branch, brandName, tagline, whatsapp, instagram, themeClass }: Props) {
+  const [pageLoading, setPageLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setPageLoading(false), 1800);
+    return () => clearTimeout(timer);
+  }, []);
+
   // Load initial items
   const [items, setItemsState] = useState<MenuItem[]>(menuData);
   
@@ -422,6 +430,7 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
 
   return (
     <div className={`${themeClass} min-h-screen relative`} dir="rtl">
+      <AnimatedLogoLoader isLoading={pageLoading} theme={branch} />
       {/* Header Container */}
       <div className="relative z-50 px-4 max-w-6xl mx-auto w-full transition-all mt-4">
         <header className="flex flex-col md:flex-row items-center justify-between bg-background/85 backdrop-blur-xl border border-border shadow-lg rounded-[1.5rem] md:rounded-full px-4 md:px-5 py-3 md:py-2.5 gap-3 md:gap-0">

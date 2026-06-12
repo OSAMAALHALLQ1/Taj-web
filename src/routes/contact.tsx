@@ -83,9 +83,9 @@ function ContactPage() {
 
       <header className="sticky top-4 z-40 max-w-6xl mx-auto w-full px-4 mb-8">
         <div className="flex items-center justify-between bg-black/85 backdrop-blur-xl border border-white/10 shadow-lg rounded-full px-5 py-3">
-          <Link to="/" className="flex items-center gap-2 text-zinc-400 hover:text-white transition">
-            <ArrowLeft className="w-4 h-4" />
-            <span className="text-xs font-semibold">الرئيسية</span>
+          <Link to="/" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white hover:bg-white/10 hover:border-[#D4AF37]/30 transition-all shadow-md">
+            <ArrowLeft className="w-4 h-4 text-[#D4AF37]" />
+            <span className="text-xs font-bold font-arabic">العودة للرئيسية</span>
           </Link>
           <div className="flex items-center gap-2.5">
             <img 

@@ -150,7 +150,7 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <AnimatedLogoLoader isLoading={booting} theme={isCafe ? "cafe" : "restaurant"} />
+      <AnimatedLogoLoader isLoading={booting} theme="entrance" />
       <div className={booting ? "app-enter is-waiting" : "app-enter"}>
         <Outlet />
       </div>
