@@ -437,22 +437,21 @@ function AdminPage() {
   }, [editingItem]);
 
   return (
-    <div dir="rtl" className="min-h-screen bg-[#0a0d16] text-white flex flex-col font-arabic">
+    <div dir="rtl" className="min-h-screen bg-black text-white flex flex-col font-arabic relative overflow-hidden">
+      <div className="pointer-events-none absolute inset-0 z-[1] premium-noise" />
       
-      {/* 1. GATEKEEPER LOCKSCREEN */}
       {!adminLoggedIn ? (
-        <div className="flex-grow flex items-center justify-center p-4 bg-[#07090f] min-h-screen">
-          <div className="bg-[#111625] p-8 rounded-3xl border border-white/10 shadow-2xl max-w-md w-full text-center relative overflow-hidden">
-            {/* Design glow background */}
-            <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="flex-grow flex items-center justify-center p-4 bg-black min-h-screen relative z-10">
+          <div className="liquid-glass p-8 rounded-3xl border border-white/10 shadow-2xl max-w-md w-full text-center relative overflow-hidden">
+            <div className="absolute -top-24 -left-24 w-48 h-48 bg-[#D4AF37]/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-            <div className="w-16 h-16 bg-[#D4AF37]/10 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#D4AF37]/20">
+            <div className="w-16 h-16 bg-[#D4AF37]/5 rounded-2xl flex items-center justify-center mx-auto mb-6 border border-[#D4AF37]/30">
               <Shield className="w-8 h-8 text-[#D4AF37] animate-pulse" />
             </div>
 
-            <h2 className="text-xl font-bold mb-2">وحدة القيادة والتحكم التاج</h2>
-            <p className="text-xs text-gray-400 mb-6 leading-relaxed font-light">
-              الرجاء إدخال بيانات لوحة التحكم للوصول لإحصائيات الطلبات وتعديل المنيو.
+            <h2 className="text-xl font-bold mb-2 font-display">لوحة تحكم مجموعة التاج</h2>
+            <p className="text-xs text-zinc-400 mb-6 leading-relaxed font-light">
+              الرجاء تسجيل الدخول للوصول إلى مركز الإدارة والتحليلات.
             </p>
 
             <form onSubmit={handleLogin} className="space-y-4 text-right">
@@ -465,7 +464,7 @@ function AdminPage() {
                     onChange={(e) => setUsername(e.target.value)}
                     placeholder="admin" 
                     required
-                    className="w-full bg-[#171e30] border border-white/10 rounded-xl py-3 pr-10 pl-4 text-xs text-white focus:border-[#D4AF37] outline-none transition-all font-mono"
+                    className="w-full bg-black/60 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-xs text-white focus:border-[#D4AF37] outline-none transition-all font-mono"
                   />
                   <User className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                 </div>
@@ -480,7 +479,7 @@ function AdminPage() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder="••••••••" 
                     required
-                    className="w-full bg-[#171e30] border border-white/10 rounded-xl py-3 pr-10 pl-4 text-xs text-white focus:border-[#D4AF37] outline-none transition-all font-mono"
+                    className="w-full bg-black/60 border border-white/10 rounded-xl py-3 pr-10 pl-4 text-xs text-white focus:border-[#D4AF37] outline-none transition-all font-mono"
                   />
                   <Lock className="absolute right-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                 </div>
@@ -497,25 +496,21 @@ function AdminPage() {
           </div>
         </div>
       ) : (
-        /* 2. ADMIN COMMAND DASHBOARD */
-        <div className="flex-grow flex flex-col lg:flex-row min-h-screen w-full">
+        <div className="flex-grow flex flex-col lg:flex-row min-h-screen w-full relative z-10">
           
-          {/* Sidebar */}
-          <aside className="w-full lg:w-64 bg-[#111625] border-l border-white/5 flex flex-col justify-between p-6 z-10 shrink-0">
+          <aside className="w-full lg:w-64 bg-black/60 backdrop-blur-xl border-l border-white/10 flex flex-col justify-between p-6 shrink-0">
             <div className="space-y-8">
-              {/* Logo / System identity */}
               <div className="flex items-center gap-3 pb-6 border-b border-white/5">
-                <div className="w-10 h-10 bg-[#D4AF37]/10 rounded-xl flex items-center justify-center border border-[#D4AF37]/20 shrink-0">
+                <div className="w-10 h-10 bg-[#D4AF37]/5 rounded-xl flex items-center justify-center border border-[#D4AF37]/30 shrink-0">
                   <CrownLogo size={22} className="text-[#D4AF37]" />
                 </div>
                 <div className="flex flex-col text-right">
-                  <span className="font-bold text-sm text-white leading-none">لوحة التحكم التاج</span>
+                  <span className="font-bold text-sm text-white leading-none font-display">لوحة التحكم التاج</span>
                   <span className="text-[9px] font-bold text-gray-400 tracking-wider mt-1 uppercase leading-none">Taj Command Center</span>
                 </div>
               </div>
 
-              {/* Sidebar navigation */}
-              <nav className="flex flex-col gap-1.5 text-right">
+              <nav className="flex flex-col gap-1.5 text-right font-display">
                 <button 
                   onClick={() => setActiveTab("analytics")}
                   className={`w-full py-3 px-4 rounded-xl text-xs font-bold flex items-center gap-3 transition-all ${
@@ -566,7 +561,6 @@ function AdminPage() {
               </nav>
             </div>
 
-            {/* Sidebar actions footer */}
             <div className="mt-8 pt-6 border-t border-white/5 space-y-2">
               <Link 
                 to="/" 
@@ -585,83 +579,78 @@ function AdminPage() {
             </div>
           </aside>
 
-          {/* Main content body */}
           <main className="flex-grow p-6 md:p-8 overflow-y-auto max-w-full">
             
-            {/* Main top header */}
             <header className="flex flex-col md:flex-row justify-between items-center gap-4 mb-8 pb-6 border-b border-white/5">
               <div className="text-right w-full md:w-auto">
-                <h1 className="text-2xl font-black">مركز التحكم وإدارة العمليات</h1>
+                <h1 className="text-2xl font-black font-display">مركز التحكم وإدارة العمليات</h1>
                 <p className="text-xs text-gray-400 font-light mt-1">
                   إدارة شاملة لقائمة الطعام، ومتابعة الطلبات، وتعديل إعدادات التوصيل والواتساب.
                 </p>
               </div>
               <div className="flex flex-wrap items-center gap-4">
-                <div className="bg-[#111625] px-4 py-2.5 rounded-2xl border border-white/5 flex items-center gap-2">
+                <div className="liquid-glass px-4 py-2.5 rounded-2xl border border-white/10 flex items-center gap-2">
                   <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
                   <span className="text-[10px] text-gray-300 font-bold">حالة المخدم: مستقر</span>
                 </div>
-                <div className="bg-[#111625] px-4 py-2.5 rounded-2xl border border-white/5 flex items-center gap-2">
+                <div className="liquid-glass px-4 py-2.5 rounded-2xl border border-white/10 flex items-center gap-2">
                   <Users className="w-4 h-4 text-[#D4AF37]" />
                   <span className="text-[10px] text-gray-300 font-bold">نشط بالموقع الآن: <span className="text-white font-extrabold font-mono">{liveVisitors}</span></span>
                 </div>
               </div>
             </header>
 
-            {/* TAB 1: ANALYTICS */}
             {activeTab === "analytics" && (
               <div className="space-y-6 animate-fade-up">
                 
-                {/* KPI Metrics row */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                  {/* Cards */}
-                  <div className="bg-[#111625] p-5 rounded-2xl border border-white/5 relative overflow-hidden">
+                  
+                  <div className="liquid-glass p-5 rounded-2xl border border-white/10 relative overflow-hidden">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase">الزوار النشطون حياً</span>
+                      <span className="text-[10px] font-bold text-gray-400 uppercase">العملاء المتصلون حالياً بالمنصة</span>
                       <div className="w-8 h-8 bg-blue-500/10 rounded-xl flex items-center justify-center text-blue-400"><Users className="w-4 h-4" /></div>
                     </div>
                     <h3 className="text-3xl font-black font-mono">{liveVisitors}</h3>
-                    <p className="text-[9px] text-gray-500 mt-2">محاكاة فورية لمستخدمي المنيو</p>
+                    <p className="text-[9px] text-gray-500 mt-2">تتبع فوري للزوار الفعليين</p>
                   </div>
 
-                  <div className="bg-[#111625] p-5 rounded-2xl border border-white/5 relative overflow-hidden">
+                  <div className="liquid-glass p-5 rounded-2xl border border-white/10 relative overflow-hidden">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase">السلات النشطة الآن</span>
+                      <span className="text-[10px] font-bold text-gray-400 uppercase">عربات التسوق النشطة بالمتجر</span>
                       <div className="w-8 h-8 bg-amber-500/10 rounded-xl flex items-center justify-center text-amber-400"><ShoppingBag className="w-4 h-4" /></div>
                     </div>
                     <h3 className="text-3xl font-black font-mono">{liveCarts}</h3>
-                    <p className="text-[9px] text-gray-500 mt-2">سلات تحتوي منتجات حالياً</p>
+                    <p className="text-[9px] text-gray-500 mt-2">عربات تحتوي منتجات حالياً</p>
                   </div>
 
-                  <div className="bg-[#111625] p-5 rounded-2xl border border-white/5 relative overflow-hidden">
+                  <div className="liquid-glass p-5 rounded-2xl border border-white/10 relative overflow-hidden">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase">الطلبات المرسلة للواتساب</span>
+                      <span className="text-[10px] font-bold text-gray-400 uppercase">إجمالي الطلبات المؤكدة</span>
                       <div className="w-8 h-8 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400"><CheckCircle2 className="w-4 h-4" /></div>
                     </div>
                     <h3 className="text-3xl font-black font-mono">{liveOrders}</h3>
-                    <p className="text-[9px] text-gray-500 mt-2">تراكمي الطلبات المستلمة</p>
+                    <p className="text-[9px] text-gray-500 mt-2">إجمالي الطلبات المؤكدة</p>
                   </div>
 
-                  <div className="bg-[#111625] p-5 rounded-2xl border border-white/5 relative overflow-hidden">
+                  <div className="liquid-glass p-5 rounded-2xl border border-white/10 relative overflow-hidden">
                     <div className="flex items-center justify-between mb-4">
-                      <span className="text-[10px] font-bold text-gray-400 uppercase">المبيعات المتوقعة</span>
-                      <div className="w-8 h-8 bg-purple-500/10 rounded-xl flex items-center justify-center text-purple-400"><CrownLogo size={18} /></div>
+                      <span className="text-[10px] font-bold text-gray-400 uppercase">الإيرادات التقديرية للطلبات</span>
+                      <div className="w-8 h-8 bg-[#D4AF37]/15 rounded-xl flex items-center justify-center text-[#D4AF37]"><CrownLogo size={18} /></div>
                     </div>
                     <h3 className="text-3xl font-black font-mono text-[#D4AF37]">{liveOrders * 65} ₪</h3>
-                    <p className="text-[9px] text-gray-500 mt-2">بمعدل 65 شيكل لكل فاتورة</p>
+                    <p className="text-[9px] text-gray-500 mt-2">بناءً على متوسط قيمة الفاتورة 65 ₪</p>
                   </div>
                 </div>
 
-                {/* Simulated Live Activity Log */}
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
-                  <div className="lg:col-span-8 bg-[#111625] rounded-3xl p-6 border border-white/5 flex flex-col justify-between">
+                  <div className="lg:col-span-8 liquid-glass rounded-3xl p-6 border border-white/10 shadow-2xl flex flex-col justify-between">
                     <div>
-                      <h3 className="font-bold text-base mb-1">النشاط التجاري المباشر (Live activity Log)</h3>
-                      <p className="text-xs text-gray-400 font-light mb-6">سجل حركة تصفح العملاء وطلب الوجبات في المتجر</p>
+                      <h3 className="font-bold text-base mb-1 font-display">سجل العمليات والطلبات الفورية</h3>
+                      <p className="text-xs text-gray-400 font-light mb-6">تتبع حي لأنشطة الزوار في الوقت الفعلي</p>
                       
                       <div className="space-y-4">
                         {liveActivity.map((log, i) => (
-                          <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-[#171e30] border border-white/5 text-xs">
+                          <div key={i} className="flex items-center justify-between p-3 rounded-xl bg-white/[0.02] border border-white/10 text-xs">
                             <span className="text-gray-300 font-light">{log.event}</span>
                             <span className="font-mono text-gray-500">{log.time}</span>
                           </div>
@@ -670,17 +659,17 @@ function AdminPage() {
                     </div>
                   </div>
 
-                  <div className="lg:col-span-4 bg-[#111625] rounded-3xl p-6 border border-white/5 flex flex-col justify-between">
+                  <div className="lg:col-span-4 liquid-glass rounded-3xl p-6 border border-white/10 shadow-2xl flex flex-col justify-between">
                     <div>
-                      <h3 className="font-bold text-base mb-1">نظام الفواتير الموحد</h3>
-                      <p className="text-xs text-gray-400 font-light mb-6">سرعة وسهولة التوجيه للواتساب</p>
+                      <h3 className="font-bold text-base mb-1 font-display">آلية معالجة الطلبات وإصدار الفواتير</h3>
+                      <p className="text-xs text-gray-400 font-light mb-6">دليل توجيه الطلبات عبر واتساب للعملاء</p>
                       
-                      <div className="bg-[#171e30] p-4 rounded-2xl border border-white/5 text-xs space-y-3 font-light leading-relaxed">
-                        <p className="text-[#D4AF37] font-bold">كيف يعمل منطق كنتاكي بالفاتورة؟</p>
-                        <p>١. يجمع الزبون الطلبات بالسلة ثم يكتب بياناته بشكل دقيق.</p>
-                        <p>٢. يتحقق النظام من رقم الجوال (يجب أن يكون 10 أرقام ومقدمته 059 أو 056).</p>
-                        <p>٣. يختار الزبون موقعه الجغرافي ليحتسب النظام السعر التلقائي للتوصيل من ملف التسعيرة.</p>
-                        <p>٤. تصاغ الرسالة فوراً على شكل فاتورة واتساب نصية مرتبة لضمان استلامها وقراءتها بلمح البصر.</p>
+                      <div className="bg-white/[0.02] p-4 rounded-2xl border border-white/10 text-xs space-y-3 font-light leading-relaxed">
+                        <p className="text-[#D4AF37] font-bold font-display">كيف تعمل آلية الطلب بالفاتورة الموحدة؟</p>
+                        <p>١. يجمع العميل المنتجات في السلة ثم يكتب بيانات التوصيل أو الاستلام.</p>
+                        <p>٢. يتحقق النظام تلقائياً من صحة رقم الجوال (شبكة جوال أو وطنية).</p>
+                        <p>٣. يحدد العميل منطقته الجغرافية لاحتساب رسوم التوصيل وفقاً لجدول التسعير المعتمد.</p>
+                        <p>٤. يتم صياغة الفاتورة بشكل نصي فاخر ومنظم وتوجيها فوراً لواتساب الفرع المعني بمجموعة التاج.</p>
                       </div>
                     </div>
                   </div>
@@ -688,17 +677,14 @@ function AdminPage() {
               </div>
             )}
 
-            {/* TAB 2: MENU MANAGEMENT */}
             {activeTab === "menu" && (
               <div className="space-y-6 animate-fade-up">
-                
-                {/* Actions bar for CRUD table */}
-                <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 bg-[#111625] p-4 rounded-2xl border border-white/5">
+                <div className="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-4 liquid-glass p-4 rounded-2xl border border-white/10 shadow-md">
                   <div className="flex items-center gap-3">
                     <button 
                       onClick={() => setSelectedBranchFilter("all")}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                        selectedBranchFilter === "all" ? "bg-[#D4AF37] text-black" : "bg-white/5 text-gray-400 hover:text-white"
+                        selectedBranchFilter === "all" ? "bg-[#D4AF37] text-black shadow-[0_0_15px_rgba(212,175,55,0.4)]" : "bg-white/5 text-gray-400 hover:text-white"
                       }`}
                     >
                       عرض الكل
@@ -706,7 +692,7 @@ function AdminPage() {
                     <button 
                       onClick={() => setSelectedBranchFilter("restaurant")}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                        selectedBranchFilter === "restaurant" ? "bg-[#D4AF37] text-black" : "bg-white/5 text-gray-400 hover:text-white"
+                        selectedBranchFilter === "restaurant" ? "bg-[#D4AF37] text-black shadow-[0_0_15px_rgba(212,175,55,0.4)]" : "bg-white/5 text-gray-400 hover:text-white"
                       }`}
                     >
                       مطعم التاج
@@ -714,7 +700,7 @@ function AdminPage() {
                     <button 
                       onClick={() => setSelectedBranchFilter("cafe")}
                       className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                        selectedBranchFilter === "cafe" ? "bg-[#D4AF37] text-black" : "bg-white/5 text-gray-400 hover:text-white"
+                        selectedBranchFilter === "cafe" ? "bg-[#D4AF37] text-black shadow-[0_0_15px_rgba(212,175,55,0.4)]" : "bg-white/5 text-gray-400 hover:text-white"
                       }`}
                     >
                       تاج مود كافيه
@@ -724,14 +710,14 @@ function AdminPage() {
                   <div className="flex items-center gap-2">
                     <button 
                       onClick={() => setShowAddModal(true)}
-                      className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-1.5 transition"
+                      className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow-[0_0_15px_rgba(16,185,129,0.2)] hover:shadow-[0_0_20px_rgba(16,185,129,0.4)] cursor-pointer"
                     >
                       <Plus className="w-3.5 h-3.5" />
                       <span>إضافة صنف جديد</span>
                     </button>
                     <button 
                       onClick={handleResetMenu}
-                      className="bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 text-red-400 font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-1.5 transition"
+                      className="bg-red-500/10 border border-red-500/20 hover:bg-red-500/20 text-red-400 font-bold py-2 px-4 rounded-xl text-xs flex items-center gap-1.5 transition-all cursor-pointer"
                     >
                       <RotateCcw className="w-3.5 h-3.5" />
                       <span>استعادة الافتراضي</span>
@@ -739,48 +725,47 @@ function AdminPage() {
                   </div>
                 </div>
 
-                {/* Items CRUD List Table */}
-                <div className="bg-[#111625] rounded-3xl border border-white/5 overflow-hidden">
+                <div className="liquid-glass rounded-3xl border border-white/10 overflow-hidden shadow-2xl">
                   <div className="overflow-x-auto">
                     <table className="w-full text-right text-xs">
-                      <thead className="bg-[#171e30] border-b border-white/5 text-gray-400 font-bold uppercase">
+                      <thead className="bg-white/[0.03] border-b border-white/10 text-gray-400 font-bold uppercase">
                         <tr>
-                          <th className="py-4 px-6">الفرع</th>
-                          <th className="py-4 px-6">القسم</th>
-                          <th className="py-4 px-6">اسم الوجبة/الصنف</th>
-                          <th className="py-4 px-6">السعر</th>
-                          <th className="py-4 px-6 max-w-xs">الوصف</th>
-                          <th className="py-4 px-6 text-center">العمليات</th>
+                          <th className="py-4 px-6 font-display text-sm text-[#D4AF37]">الفرع</th>
+                          <th className="py-4 px-6 font-display text-sm text-[#D4AF37]">القسم</th>
+                          <th className="py-4 px-6 font-display text-sm text-[#D4AF37]">اسم الوجبة/الصنف</th>
+                          <th className="py-4 px-6 font-display text-sm text-[#D4AF37]">السعر</th>
+                          <th className="py-4 px-6 font-display text-sm text-[#D4AF37] max-w-xs">الوصف</th>
+                          <th className="py-4 px-6 font-display text-sm text-[#D4AF37] text-center">العمليات</th>
                         </tr>
                       </thead>
-                      <tbody className="divide-y divide-white/5">
+                      <tbody className="divide-y divide-white/5 font-arabic">
                         {filteredItems.map((item, idx) => (
-                          <tr key={idx} className="hover:bg-white/[0.02] transition-colors">
+                          <tr key={idx} className="hover:bg-white/[0.03] transition-colors border-b border-white/5">
                             <td className="py-4 px-6">
                               <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                                item.branch === "restaurant" ? "bg-red-500/15 text-red-400" : "bg-orange-500/15 text-orange-400"
+                                item.branch === "restaurant" ? "bg-red-500/10 text-red-400 border border-red-500/20" : "bg-amber-500/10 text-amber-400 border border-amber-500/20"
                               }`}>
-                                {item.branch === "restaurant" ? "مطعم" : "كافيه"}
+                                {item.branch === "restaurant" ? "مطعم التاج" : "تاج مود كافيه"}
                               </span>
                             </td>
-                            <td className="py-4 px-6 font-semibold">{item.category}</td>
-                            <td className="py-4 px-6 font-extrabold text-sm">{item.title}</td>
-                            <td className="py-4 px-6 font-mono text-sm text-[#D4AF37]">
+                            <td className="py-4 px-6 font-semibold text-zinc-300">{item.category}</td>
+                            <td className="py-4 px-6 font-bold text-sm text-white font-display">{item.title}</td>
+                            <td className="py-4 px-6 font-mono text-sm text-[#D4AF37] font-bold">
                               {item.price === "-" ? "حسب الطلب" : `${item.price} ₪`}
                             </td>
-                            <td className="py-4 px-6 text-gray-400 font-light truncate max-w-xs">{item.desc || "-"}</td>
+                            <td className="py-4 px-6 text-zinc-400 font-light truncate max-w-xs">{item.desc || "-"}</td>
                             <td className="py-4 px-6 text-center">
                               <div className="flex items-center justify-center gap-2">
                                 <button 
                                   onClick={() => setEditingItem({ index: idx, item: { ...item } })}
-                                  className="p-1.5 hover:bg-amber-500/15 text-amber-400 rounded transition"
+                                  className="p-1.5 hover:bg-amber-500/15 text-amber-400 rounded-lg transition-all border border-transparent hover:border-amber-500/30 cursor-pointer"
                                   title="تعديل"
                                 >
                                   <Edit2 className="w-4 h-4" />
                                 </button>
                                 <button 
                                   onClick={() => handleDeleteItem(idx)}
-                                  className="p-1.5 hover:bg-red-500/15 text-red-400 rounded transition"
+                                  className="p-1.5 hover:bg-red-500/15 text-red-400 rounded-lg transition-all border border-transparent hover:border-red-500/30 cursor-pointer"
                                   title="حذف"
                                 >
                                   <Trash2 className="w-4 h-4" />
@@ -793,48 +778,55 @@ function AdminPage() {
                     </table>
                   </div>
                 </div>
-
               </div>
             )}
 
-            {/* TAB 3: MEDIA (IMAGES) */}
             {activeTab === "media" && (
               <div className="space-y-6 animate-fade-up">
-                <div className="bg-[#111625] rounded-3xl p-6 border border-white/5">
-                  <h3 className="font-bold text-base mb-1">معرض صور وتصنيفات المنيو</h3>
+                <div className="liquid-glass rounded-3xl p-6 border border-white/10 shadow-2xl">
+                  <h3 className="font-bold text-lg font-display text-[#D4AF37] mb-1">معرض صور وتصنيفات المنيو</h3>
                   <p className="text-xs text-gray-400 font-light mb-6">
                     الصور الإفتراضية المستخدمة لتصنيفات وجبات الطعام والحلويات بمجموعة التاج.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    <div className="bg-[#171e30] border border-white/5 rounded-2xl overflow-hidden">
-                      <img src="https://images.unsplash.com/photo-1646618580749-3836fc610c36?q=80&w=600&auto=format&fit=crop" className="w-full aspect-video object-cover" />
-                      <div className="p-3 text-xs font-bold">قسم الشاورما (مطعم)</div>
+                    <div className="liquid-glass border border-white/10 rounded-2xl overflow-hidden shadow-lg group hover:border-[#D4AF37]/30 transition-all duration-300">
+                      <div className="relative overflow-hidden aspect-video">
+                        <img src="https://images.unsplash.com/photo-1646618580749-3836fc610c36?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                      </div>
+                      <div className="p-3 text-xs font-bold text-center text-zinc-200">قسم الشاورما (مطعم التاج)</div>
                     </div>
-                    <div className="bg-[#171e30] border border-white/5 rounded-2xl overflow-hidden">
-                      <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop" className="w-full aspect-video object-cover" />
-                      <div className="p-3 text-xs font-bold">قسم المشاوي (مطعم)</div>
+                    <div className="liquid-glass border border-white/10 rounded-2xl overflow-hidden shadow-lg group hover:border-[#D4AF37]/30 transition-all duration-300">
+                      <div className="relative overflow-hidden aspect-video">
+                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                      </div>
+                      <div className="p-3 text-xs font-bold text-center text-zinc-200">قسم المشاوي (مطعم التاج)</div>
                     </div>
-                    <div className="bg-[#171e30] border border-white/5 rounded-2xl overflow-hidden">
-                      <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=600&auto=format&fit=crop" className="w-full aspect-video object-cover" />
-                      <div className="p-3 text-xs font-bold">قسم الحلويات (كافيه)</div>
+                    <div className="liquid-glass border border-white/10 rounded-2xl overflow-hidden shadow-lg group hover:border-[#D4AF37]/30 transition-all duration-300">
+                      <div className="relative overflow-hidden aspect-video">
+                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                      </div>
+                      <div className="p-3 text-xs font-bold text-center text-zinc-200">قسم الحلويات (تاج مود كافيه)</div>
                     </div>
                   </div>
 
-                  <div className="mt-8 p-6 border border-dashed border-white/10 rounded-2xl text-center text-xs text-gray-400 font-light">
-                    <ImageIcon className="w-8 h-8 mx-auto mb-2 opacity-50 text-[#D4AF37]" />
-                    <p>رفع صور مخصصة معطل في المحاكاة التجريبية.</p>
+                  <div className="mt-8 p-8 border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-2xl text-center text-xs text-gray-400 font-light transition-all cursor-pointer bg-white/[0.01]">
+                    <ImageIcon className="w-8 h-8 mx-auto mb-3 opacity-60 text-[#D4AF37]" />
+                    <p className="font-semibold text-zinc-300 mb-1">يرجى سحب وإفلات الصور هنا لرفعها</p>
+                    <p className="text-[10px] text-gray-500">أو اضغط لتصفح الملفات من جهازك (الحد الأقصى 5 ميجابايت)</p>
                   </div>
                 </div>
               </div>
             )}
 
-            {/* TAB 4: SETTINGS */}
             {activeTab === "settings" && (
-              <div className="max-w-2xl bg-[#111625] rounded-3xl p-6 border border-white/5 space-y-6 animate-fade-up">
+              <div className="max-w-2xl liquid-glass rounded-3xl p-6 border border-white/10 space-y-6 animate-fade-up shadow-2xl">
                 <div>
-                  <h3 className="font-bold text-base mb-1">إعدادات قنوات الاتصال والفرع</h3>
-                  <p className="text-xs text-gray-400 font-light">
+                  <h3 className="font-bold text-lg font-display text-[#D4AF37] mb-1">إعدادات قنوات الاتصال والفرع</h3>
+                  <p className="text-xs text-gray-400 font-light font-arabic">
                     تعديل أرقام الواتساب ورسوم التوصيل الأساسية لتطبيق التاج.
                   </p>
                 </div>
@@ -846,7 +838,7 @@ function AdminPage() {
                       type="text" 
                       value={restaurantWhatsapp}
                       onChange={(e) => setRestaurantWhatsapp(e.target.value)}
-                      className="w-full bg-[#171e30] border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] outline-none transition-all font-mono"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all font-mono"
                     />
                   </div>
 
@@ -856,7 +848,7 @@ function AdminPage() {
                       type="text" 
                       value={cafeWhatsapp}
                       onChange={(e) => setCafeWhatsapp(e.target.value)}
-                      className="w-full bg-[#171e30] border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] outline-none transition-all font-mono"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all font-mono"
                     />
                   </div>
 
@@ -866,13 +858,13 @@ function AdminPage() {
                       type="number" 
                       value={deliveryFeeDefault}
                       onChange={(e) => setDeliveryFeeDefault(Number(e.target.value))}
-                      className="w-full bg-[#171e30] border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] outline-none transition-all font-mono"
+                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all font-mono"
                     />
                   </div>
 
                   <button 
                     onClick={handleSaveSettings}
-                    className="w-full bg-[#D4AF37] text-black font-bold py-3.5 rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-2 mt-4"
+                    className="w-full bg-[#D4AF37] text-black font-bold py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:opacity-95 text-xs flex items-center justify-center gap-2 mt-4 cursor-pointer"
                   >
                     <Settings className="w-4 h-4" />
                     <span>حفظ إعدادات الفروع والأسعار</span>
@@ -885,29 +877,28 @@ function AdminPage() {
         </div>
       )}
 
-      {/* 3. CRUD: Add Item Dialog Modal */}
       {showAddModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setShowAddModal(false)}></div>
-          <div className="relative bg-[#111625] border border-white/10 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl z-10 text-white p-6 animate-fade-up">
-            <div className="flex justify-between items-center pb-4 border-b border-white/5 mb-6">
-              <h3 className="text-base font-bold">إضافة صنف جديد لقائمة التاج</h3>
-              <button onClick={() => setShowAddModal(false)} className="p-1 text-gray-400 hover:text-white transition">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setShowAddModal(false)}></div>
+          <div className="relative liquid-glass border border-white/15 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl z-10 text-white p-6 animate-fade-up">
+            <div className="flex justify-between items-center pb-4 border-b border-white/10 mb-6">
+              <h3 className="text-base font-bold font-display text-[#D4AF37]">إضافة صنف جديد لقائمة التاج</h3>
+              <button onClick={() => setShowAddModal(false)} className="p-1.5 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition cursor-pointer">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleAddItem} className="space-y-4 text-right">
+            <form onSubmit={handleAddItem} className="space-y-4 text-right font-arabic">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] text-gray-400 font-bold mb-1.5">فرع الخدمة</label>
                   <select 
                     value={newItem.branch}
                     onChange={(e) => setNewItem(prev => ({ ...prev, branch: e.target.value as Branch, category: e.target.value === "restaurant" ? "شاورما" : "مشروبات ساخنة" }))}
-                    className="w-full text-xs bg-[#171e30] border border-white/10 rounded-xl px-3 py-3 focus:outline-none text-white cursor-pointer"
+                    className="w-full text-xs bg-white/5 border border-white/10 rounded-xl px-3 py-3 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white cursor-pointer"
                   >
-                    <option value="restaurant">مطعم التاج</option>
-                    <option value="cafe">تاج مود كافيه</option>
+                    <option value="restaurant" className="bg-zinc-950">مطعم التاج</option>
+                    <option value="cafe" className="bg-zinc-950">تاج مود كافيه</option>
                   </select>
                 </div>
                 <div>
@@ -915,10 +906,10 @@ function AdminPage() {
                   <select 
                     value={newItem.category}
                     onChange={(e) => setNewItem(prev => ({ ...prev, category: e.target.value }))}
-                    className="w-full text-xs bg-[#171e30] border border-white/10 rounded-xl px-3 py-3 focus:outline-none text-white cursor-pointer"
+                    className="w-full text-xs bg-white/5 border border-white/10 rounded-xl px-3 py-3 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white cursor-pointer"
                   >
                     {categoriesList.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
+                      <option key={cat} value={cat} className="bg-zinc-950">{cat}</option>
                     ))}
                   </select>
                 </div>
@@ -932,7 +923,7 @@ function AdminPage() {
                   value={newItem.title}
                   onChange={(e) => setNewItem(prev => ({ ...prev, title: e.target.value }))}
                   placeholder="مثال: وجبة شاورما عربي دبل"
-                  className="w-full text-xs bg-[#171e30] border border-white/10 rounded-xl py-3 px-4 focus:outline-none text-white"
+                  className="w-full text-xs bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white"
                 />
               </div>
 
@@ -944,7 +935,7 @@ function AdminPage() {
                   value={newItem.price}
                   onChange={(e) => setNewItem(prev => ({ ...prev, price: e.target.value }))}
                   placeholder="مثال: 35"
-                  className="w-full text-xs bg-[#171e30] border border-white/10 rounded-xl py-3 px-4 focus:outline-none text-white font-mono"
+                  className="w-full text-xs bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white font-mono"
                 />
               </div>
 
@@ -954,13 +945,13 @@ function AdminPage() {
                   value={newItem.desc}
                   onChange={(e) => setNewItem(prev => ({ ...prev, desc: e.target.value }))}
                   placeholder="مكونات الوجبة وتفاصيل التقديم..."
-                  className="w-full text-xs bg-[#171e30] border border-white/10 rounded-xl p-3 h-20 focus:outline-none text-white resize-none"
+                  className="w-full text-xs bg-white/5 border border-white/10 rounded-xl p-3 h-20 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white resize-none"
                 />
               </div>
 
               <button 
                 type="submit"
-                className="w-full bg-green-600 text-white font-bold py-3.5 rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-1.5 hover:bg-green-700 mt-6"
+                className="w-full bg-[#D4AF37] text-black font-bold py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:opacity-95 text-xs flex items-center justify-center gap-1.5 mt-6 cursor-pointer"
               >
                 <Plus className="w-4 h-4" />
                 <span>إضافة الصنف للمنيو فوراً</span>
@@ -970,19 +961,18 @@ function AdminPage() {
         </div>
       )}
 
-      {/* 4. CRUD: Edit Item Dialog Modal */}
       {editingItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setEditingItem(null)}></div>
-          <div className="relative bg-[#111625] border border-white/10 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl z-10 text-white p-6 animate-fade-up">
-            <div className="flex justify-between items-center pb-4 border-b border-white/5 mb-6">
-              <h3 className="text-base font-bold">تعديل صنف في منيو التاج</h3>
-              <button onClick={() => setEditingItem(null)} className="p-1 text-gray-400 hover:text-white transition">
+          <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setEditingItem(null)}></div>
+          <div className="relative liquid-glass border border-white/15 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl z-10 text-white p-6 animate-fade-up">
+            <div className="flex justify-between items-center pb-4 border-b border-white/10 mb-6">
+              <h3 className="text-base font-bold font-display text-[#D4AF37]">تعديل صنف في منيو التاج</h3>
+              <button onClick={() => setEditingItem(null)} className="p-1.5 text-gray-400 hover:text-white hover:bg-white/5 rounded-lg transition cursor-pointer">
                 <X className="w-4 h-4" />
               </button>
             </div>
 
-            <form onSubmit={handleEditItem} className="space-y-4 text-right">
+            <form onSubmit={handleEditItem} className="space-y-4 text-right font-arabic">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-[10px] text-gray-400 font-bold mb-1.5">فرع الخدمة</label>
@@ -999,10 +989,10 @@ function AdminPage() {
                         }
                       };
                     })}
-                    className="w-full text-xs bg-[#171e30] border border-white/10 rounded-xl px-3 py-3 focus:outline-none text-white cursor-pointer"
+                    className="w-full text-xs bg-white/5 border border-white/10 rounded-xl px-3 py-3 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white cursor-pointer"
                   >
-                    <option value="restaurant">مطعم التاج</option>
-                    <option value="cafe">تاج مود كافيه</option>
+                    <option value="restaurant" className="bg-zinc-950">مطعم التاج</option>
+                    <option value="cafe" className="bg-zinc-950">تاج مود كافيه</option>
                   </select>
                 </div>
                 <div>
@@ -1016,10 +1006,10 @@ function AdminPage() {
                         item: { ...prev.item, category: e.target.value }
                       };
                     })}
-                    className="w-full text-xs bg-[#171e30] border border-white/10 rounded-xl px-3 py-3 focus:outline-none text-white cursor-pointer"
+                    className="w-full text-xs bg-white/5 border border-white/10 rounded-xl px-3 py-3 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white cursor-pointer"
                   >
                     {editCategoriesList.map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
+                      <option key={cat} value={cat} className="bg-zinc-950">{cat}</option>
                     ))}
                   </select>
                 </div>
@@ -1039,7 +1029,7 @@ function AdminPage() {
                     };
                   })}
                   placeholder="اسم الوجبة"
-                  className="w-full text-xs bg-[#171e30] border border-white/10 rounded-xl py-3 px-4 focus:outline-none text-white"
+                  className="w-full text-xs bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white"
                 />
               </div>
 
@@ -1057,7 +1047,7 @@ function AdminPage() {
                     };
                   })}
                   placeholder="السعر"
-                  className="w-full text-xs bg-[#171e30] border border-white/10 rounded-xl py-3 px-4 focus:outline-none text-white font-mono"
+                  className="w-full text-xs bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white font-mono"
                 />
               </div>
 
@@ -1073,13 +1063,13 @@ function AdminPage() {
                     };
                   })}
                   placeholder="الوصف"
-                  className="w-full text-xs bg-[#171e30] border border-white/10 rounded-xl p-3 h-20 focus:outline-none text-white resize-none"
+                  className="w-full text-xs bg-white/5 border border-white/10 rounded-xl p-3 h-20 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white resize-none"
                 />
               </div>
 
               <button 
                 type="submit"
-                className="w-full bg-[#D4AF37] text-black font-bold py-3.5 rounded-xl transition-all shadow-md text-xs flex items-center justify-center gap-1.5 hover:opacity-95 mt-6"
+                className="w-full bg-[#D4AF37] text-black font-bold py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:opacity-95 text-xs flex items-center justify-center gap-1.5 mt-6 cursor-pointer"
               >
                 <Edit2 className="w-4 h-4" />
                 <span>حفظ التعديلات الحالية</span>

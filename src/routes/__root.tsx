@@ -45,13 +45,13 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   }, [error]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
+    <div className="flex min-h-screen items-center justify-center bg-[#050303] px-4 text-white">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">
-          This page didn't load
+        <h1 className="text-xl font-semibold tracking-tight text-white">
+          لم يتم تحميل الصفحة بنجاح
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+        <p className="mt-2 text-sm text-gray-400">
+          حدث خطأ غير متوقع. يرجى إعادة المحاولة أو العودة للرئيسية.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
@@ -59,15 +59,15 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
               router.invalidate();
               reset();
             }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="inline-flex items-center justify-center rounded-2xl bg-[#D4AF37] text-black px-6 py-2.5 text-sm font-bold transition-all hover:opacity-90"
           >
-            Try again
+            إعادة المحاولة
           </button>
           <a
             href="/"
-            className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+            className="inline-flex items-center justify-center rounded-2xl border border-white/10 px-6 py-2.5 text-sm font-bold text-white transition-all hover:bg-white/5"
           >
-            Go home
+            الرئيسية
           </a>
         </div>
       </div>
@@ -80,16 +80,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "مجموعة التاج الفاخرة | Al-Taj Group" },
+      { name: "description", content: "الموقع الرسمي لمجموعة التاج - مطعم التاج الملكي وتاج مود كافيه. أرقى الوجبات والمشروبات والحلويات الفاخرة." },
+      { name: "author", content: "مجموعة التاج" },
+      { property: "og:title", content: "مجموعة التاج الفاخرة | Al-Taj Group" },
+      { property: "og:description", content: "الموقع الرسمي لمجموعة التاج - مطعم التاج الملكي وتاج مود كافيه. أرقى الوجبات والمشروبات والحلويات الفاخرة." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:site", content: "@taj_group" },
     ],
     links: [
+      { rel: "icon", type: "image/png", href: "/logos/taj-group.png" },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -140,11 +141,9 @@ function RootComponent() {
   const [booting, setBooting] = useState(true);
   const router = useRouter();
   
-  // Determine theme from URL (either path /cafe or search query ?branch=cafe)
   const isCafe = router.state.location.pathname?.includes('cafe') || false;
 
   useEffect(() => {
-    // Keep loader on screen long enough for SVG animation sequence
     const timer = window.setTimeout(() => setBooting(false), 1800);
     return () => window.clearTimeout(timer);
   }, []);
@@ -153,7 +152,6 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       <AnimatedLogoLoader isLoading={booting} theme={isCafe ? "cafe" : "restaurant"} />
       <div className={booting ? "app-enter is-waiting" : "app-enter"}>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
         <Outlet />
       </div>
     </QueryClientProvider>
