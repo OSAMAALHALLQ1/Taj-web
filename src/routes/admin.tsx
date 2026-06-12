@@ -4,7 +4,7 @@ import { CrownLogo } from "@/components/CrownLogo";
 import { 
   Lock, User, Shield, BarChart3, Plus, Edit2, Trash2, RotateCcw, 
   Settings, Image as ImageIcon, ExternalLink, Power, Users, 
-  ShoppingBag, HelpCircle, FileText, CheckCircle2, Search, X 
+  ShoppingBag, HelpCircle, FileText, CheckCircle2, Search, X, Loader2 
 } from "lucide-react";
 import { menuData, type MenuItem, type Branch } from "@/data/menu";
 import { supabase } from "@/lib/supabase";
@@ -47,6 +47,113 @@ function AdminPage() {
   const [restaurantWhatsapp, setRestaurantWhatsapp] = useState("970593104000");
   const [cafeWhatsapp, setCafeWhatsapp] = useState("970590000002");
   const [deliveryFeeDefault, setDeliveryFeeDefault] = useState(10);
+
+  // Media Gallery & Upload State
+  const [mediaImages, setMediaImages] = useState<Array<{ url: string; label: string; custom?: boolean }>>([]);
+  const [uploadProgress, setUploadProgress] = useState<string | null>(null);
+
+  // Sync Gallery state with current items and custom storage
+  useEffect(() => {
+    const defaultGallery = [
+      { url: "https://images.unsplash.com/photo-1646618580749-3836fc610c36?q=80&w=600&auto=format&fit=crop", label: "قسم الشاورما (مطعم التاج)" },
+      { url: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop", label: "قسم المشاوي (مطعم التاج)" },
+      { url: "https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=600&auto=format&fit=crop", label: "قسم الحلويات (تاج مود كافيه)" }
+    ];
+
+    let storedCustom: Array<{ url: string; label: string; custom: boolean }> = [];
+    try {
+      const stored = localStorage.getItem("taj_custom_gallery_images");
+      if (stored) {
+        storedCustom = JSON.parse(stored).map((img: any) => ({ ...img, custom: true }));
+      }
+    } catch (e) {
+      console.error("Error reading custom gallery images:", e);
+    }
+
+    const menuImages = items
+      .filter(item => item.image && !item.image.startsWith("/images/"))
+      .map(item => ({
+        url: item.image!,
+        label: `${item.title} (${item.branch === "restaurant" ? "مطعم" : "كافيه"})`,
+        custom: false
+      }));
+
+    const allImages = [...defaultGallery, ...storedCustom];
+    menuImages.forEach(mImg => {
+      if (!allImages.some(img => img.url === mImg.url)) {
+        allImages.push(mImg);
+      }
+    });
+
+    setMediaImages(allImages);
+  }, [items]);
+
+  // Upload function
+  const uploadImage = async (file: File): Promise<string> => {
+    if (file.size > 5 * 1024 * 1024) {
+      throw new Error("حجم الملف يجب ألا يتجاوز 5 ميجابايت");
+    }
+
+    const fileExt = file.name.split(".").pop();
+    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+    const filePath = `uploads/${fileName}`;
+
+    try {
+      const { error } = await supabase.storage
+        .from("menu_images")
+        .upload(filePath, file, { cacheControl: "3600", upsert: true });
+
+      if (error) throw error;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("menu_images")
+        .getPublicUrl(filePath);
+
+      return publicUrl;
+    } catch (err) {
+      console.warn("Supabase storage upload failed, using Base64 fallback:", err);
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = () => reject(new Error("فشل تحويل الصورة لترميز Base64"));
+      });
+    }
+  };
+
+  const handleMediaUpload = async (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    const file = files[0];
+
+    try {
+      setUploadProgress("جاري معالجة ورفع الصورة...");
+      const publicUrl = await uploadImage(file);
+      
+      const stored = localStorage.getItem("taj_custom_gallery_images");
+      const currentCustom = stored ? JSON.parse(stored) : [];
+      const newImg = { url: publicUrl, label: `صورة مرفوعة: ${file.name}` };
+      localStorage.setItem("taj_custom_gallery_images", JSON.stringify([newImg, ...currentCustom]));
+
+      setMediaImages(prev => [{ ...newImg, custom: true }, ...prev]);
+      alert("تمت إضافة الصورة لمعرض الوسائط بنجاح!");
+    } catch (err: any) {
+      alert(err.message || "حدث خطأ أثناء رفع الصورة.");
+    } finally {
+      setUploadProgress(null);
+    }
+  };
+
+  const handleDeleteGalleryImage = (urlToDelete: string) => {
+    if (confirm("هل أنت متأكد من رغبتك في حذف هذه الصورة من المعرض؟")) {
+      const stored = localStorage.getItem("taj_custom_gallery_images");
+      if (stored) {
+        const currentCustom = JSON.parse(stored);
+        const filtered = currentCustom.filter((img: any) => img.url !== urlToDelete);
+        localStorage.setItem("taj_custom_gallery_images", JSON.stringify(filtered));
+      }
+      setMediaImages(prev => prev.filter(img => img.url !== urlToDelete));
+    }
+  };
 
   // Live Simulated Stats State
   const [liveVisitors, setLiveVisitors] = useState(42);
@@ -786,37 +893,68 @@ function AdminPage() {
                 <div className="liquid-glass rounded-3xl p-6 border border-white/10 shadow-2xl">
                   <h3 className="font-bold text-lg font-display text-[#D4AF37] mb-1">معرض صور وتصنيفات المنيو</h3>
                   <p className="text-xs text-gray-400 font-light mb-6">
-                    الصور الإفتراضية المستخدمة لتصنيفات وجبات الطعام والحلويات بمجموعة التاج.
+                    الصور الإفتراضية والمرفوعة لتصنيفات وجبات الطعام والحلويات بمجموعة التاج.
                   </p>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-                    <div className="liquid-glass border border-white/10 rounded-2xl overflow-hidden shadow-lg group hover:border-[#D4AF37]/30 transition-all duration-300">
-                      <div className="relative overflow-hidden aspect-video">
-                        <img src="https://images.unsplash.com/photo-1646618580749-3836fc610c36?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                    {mediaImages.map((img, idx) => (
+                      <div key={idx} className="liquid-glass border border-white/10 rounded-2xl overflow-hidden shadow-lg group hover:border-[#D4AF37]/30 transition-all duration-300 relative">
+                        {img.custom && (
+                          <button
+                            onClick={() => handleDeleteGalleryImage(img.url)}
+                            className="absolute top-2 right-2 z-10 p-1.5 bg-black/60 hover:bg-red-600/90 text-white rounded-lg transition-all border border-white/10"
+                            title="حذف الصورة"
+                          >
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        )}
+                        <button
+                          onClick={() => {
+                            navigator.clipboard.writeText(img.url);
+                            alert("تم نسخ رابط الصورة إلى الحافظة!");
+                          }}
+                          className="absolute top-2 left-2 z-10 p-1.5 bg-black/60 hover:bg-[#D4AF37] hover:text-black text-white rounded-lg transition-all border border-white/10 text-[9px] font-bold text-center"
+                          title="نسخ الرابط"
+                        >
+                          نسخ الرابط
+                        </button>
+                        <div className="relative overflow-hidden aspect-video">
+                          <img src={img.url} alt={img.label} className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
+                        </div>
+                        <div className="p-3 text-xs font-bold text-center text-zinc-200 truncate" title={img.label}>{img.label}</div>
                       </div>
-                      <div className="p-3 text-xs font-bold text-center text-zinc-200">قسم الشاورما (مطعم التاج)</div>
-                    </div>
-                    <div className="liquid-glass border border-white/10 rounded-2xl overflow-hidden shadow-lg group hover:border-[#D4AF37]/30 transition-all duration-300">
-                      <div className="relative overflow-hidden aspect-video">
-                        <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
-                      </div>
-                      <div className="p-3 text-xs font-bold text-center text-zinc-200">قسم المشاوي (مطعم التاج)</div>
-                    </div>
-                    <div className="liquid-glass border border-white/10 rounded-2xl overflow-hidden shadow-lg group hover:border-[#D4AF37]/30 transition-all duration-300">
-                      <div className="relative overflow-hidden aspect-video">
-                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?q=80&w=600&auto=format&fit=crop" className="w-full h-full object-cover group-hover:scale-105 transition-all duration-500" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
-                      </div>
-                      <div className="p-3 text-xs font-bold text-center text-zinc-200">قسم الحلويات (تاج مود كافيه)</div>
-                    </div>
+                    ))}
                   </div>
 
-                  <div className="mt-8 p-8 border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-2xl text-center text-xs text-gray-400 font-light transition-all cursor-pointer bg-white/[0.01]">
-                    <ImageIcon className="w-8 h-8 mx-auto mb-3 opacity-60 text-[#D4AF37]" />
-                    <p className="font-semibold text-zinc-300 mb-1">يرجى سحب وإفلات الصور هنا لرفعها</p>
-                    <p className="text-[10px] text-gray-500">أو اضغط لتصفح الملفات من جهازك (الحد الأقصى 5 ميجابايت)</p>
+                  <div 
+                    onDragOver={(e) => e.preventDefault()}
+                    onDrop={(e) => {
+                      e.preventDefault();
+                      handleMediaUpload(e.dataTransfer.files);
+                    }}
+                    onClick={() => document.getElementById("media-gallery-upload-input")?.click()}
+                    className="mt-8 p-8 border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-2xl text-center text-xs text-gray-400 font-light transition-all cursor-pointer bg-white/[0.01] hover:bg-white/[0.02]"
+                  >
+                    <input 
+                      type="file" 
+                      id="media-gallery-upload-input" 
+                      className="hidden" 
+                      accept="image/*"
+                      onChange={(e) => handleMediaUpload(e.target.files)}
+                    />
+                    {uploadProgress && !uploadProgress.includes("صنف") ? (
+                      <div className="flex flex-col items-center justify-center space-y-2 py-4">
+                        <Loader2 className="w-8 h-8 text-[#D4AF37] animate-spin" />
+                        <p className="font-semibold text-zinc-300">{uploadProgress}</p>
+                      </div>
+                    ) : (
+                      <>
+                        <ImageIcon className="w-8 h-8 mx-auto mb-3 opacity-60 text-[#D4AF37]" />
+                        <p className="font-semibold text-zinc-300 mb-1">يرجى سحب وإفلات الصور هنا لرفعها</p>
+                        <p className="text-[10px] text-gray-500">أو اضغط لتصفح الملفات من جهازك (الحد الأقصى 5 ميجابايت)</p>
+                      </>
+                    )}
                   </div>
                 </div>
               </div>
@@ -949,6 +1087,84 @@ function AdminPage() {
                 />
               </div>
 
+              <div className="space-y-2 border-t border-white/5 pt-4">
+                <label className="block text-[10px] text-gray-400 font-bold mb-1">صورة الصنف</label>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div 
+                    onClick={() => document.getElementById("add-item-image-input")?.click()}
+                    className="border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-xl p-4 text-center cursor-pointer bg-white/[0.01] hover:bg-white/[0.02] flex flex-col items-center justify-center transition-all h-24"
+                  >
+                    <input 
+                      type="file" 
+                      id="add-item-image-input" 
+                      className="hidden" 
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const files = e.target.files;
+                        if (files && files.length > 0) {
+                          try {
+                            setUploadProgress("جاري رفع صورة الصنف...");
+                            const publicUrl = await uploadImage(files[0]);
+                            setNewItem(prev => ({ ...prev, image: publicUrl }));
+                          } catch (err: any) {
+                            alert(err.message || "فشل رفع الصورة");
+                          } finally {
+                            setUploadProgress(null);
+                          }
+                        }
+                      }}
+                    />
+                    {uploadProgress && uploadProgress.includes("صنف") ? (
+                      <Loader2 className="w-5 h-5 text-[#D4AF37] animate-spin" />
+                    ) : (
+                      <>
+                        <Plus className="w-5 h-5 text-[#D4AF37] mb-1.5" />
+                        <span className="text-[10px] text-zinc-300">رفع صورة من الجهاز</span>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col justify-between">
+                    <input 
+                      type="text"
+                      value={newItem.image || ""}
+                      onChange={(e) => setNewItem(prev => ({ ...prev, image: e.target.value }))}
+                      placeholder="أو ضع رابط الصورة هنا مباشرة..."
+                      className="w-full text-[11px] bg-white/5 border border-white/10 rounded-xl py-2.5 px-3 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white"
+                    />
+                    <p className="text-[9px] text-zinc-500 leading-tight">
+                      يمكنك رفع صورة مباشرة، أو إدخال رابط صورة خارجي (أو نسخ رابط من معرض الوسائط).
+                    </p>
+                  </div>
+                </div>
+
+                {newItem.image && (
+                  <div className="flex items-center gap-3 p-2 bg-white/5 border border-white/10 rounded-xl mt-2 relative">
+                    <img 
+                      src={newItem.image} 
+                      alt="معاينة" 
+                      className="w-12 h-12 object-cover rounded-lg border border-white/10"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/images/menu_4k/cheese_burger.jpg";
+                      }}
+                    />
+                    <div className="flex-grow min-w-0">
+                      <p className="text-[10px] text-[#D4AF37] font-semibold">معاينة الصورة المحددة</p>
+                      <p className="text-[9px] text-zinc-400 truncate font-mono">{newItem.image}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setNewItem(prev => ({ ...prev, image: undefined }))}
+                      className="p-1 text-red-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition"
+                      title="إزالة الصورة"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+              </div>
+
               <button 
                 type="submit"
                 className="w-full bg-[#D4AF37] text-black font-bold py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:opacity-95 text-xs flex items-center justify-center gap-1.5 mt-6 cursor-pointer"
@@ -1065,6 +1281,102 @@ function AdminPage() {
                   placeholder="الوصف"
                   className="w-full text-xs bg-white/5 border border-white/10 rounded-xl p-3 h-20 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white resize-none"
                 />
+              </div>
+
+              <div className="space-y-2 border-t border-white/5 pt-4">
+                <label className="block text-[10px] text-gray-400 font-bold mb-1">صورة الصنف</label>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div 
+                    onClick={() => document.getElementById("edit-item-image-input")?.click()}
+                    className="border border-dashed border-white/10 hover:border-[#D4AF37]/30 rounded-xl p-4 text-center cursor-pointer bg-white/[0.01] hover:bg-white/[0.02] flex flex-col items-center justify-center transition-all h-24"
+                  >
+                    <input 
+                      type="file" 
+                      id="edit-item-image-input" 
+                      className="hidden" 
+                      accept="image/*"
+                      onChange={async (e) => {
+                        const files = e.target.files;
+                        if (files && files.length > 0) {
+                          try {
+                            setUploadProgress("جاري تعديل صورة الصنف...");
+                            const publicUrl = await uploadImage(files[0]);
+                            setEditingItem(prev => {
+                              if (!prev) return null;
+                              return {
+                                ...prev,
+                                item: { ...prev.item, image: publicUrl }
+                              };
+                            });
+                          } catch (err: any) {
+                            alert(err.message || "فشل رفع الصورة");
+                          } finally {
+                            setUploadProgress(null);
+                          }
+                        }
+                      }}
+                    />
+                    {uploadProgress && uploadProgress.includes("تعديل") ? (
+                      <Loader2 className="w-5 h-5 text-[#D4AF37] animate-spin" />
+                    ) : (
+                      <>
+                        <Plus className="w-5 h-5 text-[#D4AF37] mb-1.5" />
+                        <span className="text-[10px] text-zinc-300">رفع صورة جديدة</span>
+                      </>
+                    )}
+                  </div>
+
+                  <div className="flex flex-col justify-between">
+                    <input 
+                      type="text"
+                      value={editingItem.item.image || ""}
+                      onChange={(e) => setEditingItem(prev => {
+                        if (!prev) return null;
+                        return {
+                          ...prev,
+                          item: { ...prev.item, image: e.target.value }
+                        };
+                      })}
+                      placeholder="رابط الصورة الحالية..."
+                      className="w-full text-[11px] bg-white/5 border border-white/10 rounded-xl py-2.5 px-3 focus:outline-none focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] text-white font-mono"
+                    />
+                    <p className="text-[9px] text-zinc-500 leading-tight">
+                      يمكنك رفع صورة مباشرة، أو تحديث الرابط هنا، أو تركه فارغاً.
+                    </p>
+                  </div>
+                </div>
+
+                {editingItem.item.image && (
+                  <div className="flex items-center gap-3 p-2 bg-white/5 border border-white/10 rounded-xl mt-2 relative">
+                    <img 
+                      src={editingItem.item.image} 
+                      alt="معاينة" 
+                      className="w-12 h-12 object-cover rounded-lg border border-white/10"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = "/images/menu_4k/cheese_burger.jpg";
+                      }}
+                    />
+                    <div className="flex-grow min-w-0">
+                      <p className="text-[10px] text-[#D4AF37] font-semibold">معاينة الصورة الحالية</p>
+                      <p className="text-[9px] text-zinc-400 truncate font-mono">{editingItem.item.image}</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setEditingItem(prev => {
+                        if (!prev) return null;
+                        return {
+                          ...prev,
+                          item: { ...prev.item, image: undefined }
+                        };
+                      })}
+                      className="p-1 text-red-400 hover:text-red-500 hover:bg-red-500/10 rounded-lg transition"
+                      title="إزالة الصورة"
+                    >
+                      <X className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
               </div>
 
               <button 
