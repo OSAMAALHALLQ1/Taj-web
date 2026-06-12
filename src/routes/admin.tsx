@@ -44,7 +44,7 @@ function AdminPage() {
   });
 
   // Settings State
-  const [restaurantWhatsapp, setRestaurantWhatsapp] = useState("970590000001");
+  const [restaurantWhatsapp, setRestaurantWhatsapp] = useState("970593104000");
   const [cafeWhatsapp, setCafeWhatsapp] = useState("970590000002");
   const [deliveryFeeDefault, setDeliveryFeeDefault] = useState(10);
 

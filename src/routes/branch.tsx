@@ -16,7 +16,7 @@ export const Route = createFileRoute("/branch")({
 });
 
 function BranchPage() {
-  const [restaurantWhatsapp, setRestaurantWhatsapp] = useState("970590000001");
+  const [restaurantWhatsapp, setRestaurantWhatsapp] = useState("970593104000");
   const [cafeWhatsapp, setCafeWhatsapp] = useState("970590000002");
 
   useEffect(() => {
@@ -52,10 +52,11 @@ function BranchPage() {
     {
       id: "restaurant",
       name: "مطعم التاج",
-      tagline: "نكهات أصيلة • مشاوي وشاورما بجودة فاخرة لجميع العائلات",
-      address: "غزة، شارع الرمال الرئيسي، مقابل بنك فلسطين (الفرع الرئيسي)",
+      tagline: "مطعم التاج لأشهى الأكل الشرقي والغربي",
+      address: "غزة، الرمال، شارع اليرموك، شرق مفترق الزهارنة، عمارة التاج هوم 1",
       hours: "يومياً: ١١:٠٠ صباحاً — ١٢:٠٠ منتصف الليل",
       phone: formatDisplayPhone(restaurantWhatsapp),
+      phoneAlt: "056-691-4914",
       whatsapp: restaurantWhatsapp,
       accent: "#D4AF37",
       hoverBorder: "hover:border-[#D4AF37]/50",
@@ -67,8 +68,8 @@ function BranchPage() {
     {
       id: "cafe",
       name: "تاج مود كافيه",
-      tagline: "قهوة مختصة فاخرة • حلويات غربية • أجواء زجاجية هادئة",
-      address: "غزة، شارع الرمال، بجوار المجلس التشريعي",
+      tagline: "تاج مود .. لكل مود😍 بار - كافي - جلسات هادئة",
+      address: "غزة، شارع اليرموك، بجوار مطعم التاج",
       hours: "يومياً: ٠٤:٠٠ صباحاً — ١٢:٠٠ منتصف الليل",
       phone: formatDisplayPhone(cafeWhatsapp),
       whatsapp: cafeWhatsapp,
@@ -167,9 +168,14 @@ function BranchPage() {
                       <Clock className="w-5 h-5 shrink-0" style={{ color: b.accent }} />
                       <span>{b.hours}</span>
                     </div>
-                    <div className="flex items-center gap-3.5">
-                      <Phone className="w-5 h-5 shrink-0" style={{ color: b.accent }} />
-                      <span>الهاتف: <a href={`tel:${b.phone.replace(/-/g, "")}`} className="font-semibold hover:underline font-mono">{b.phone}</a></span>
+                    <div className="flex items-start gap-3.5">
+                      <Phone className="w-5 h-5 shrink-0 mt-0.5" style={{ color: b.accent }} />
+                      <div className="flex flex-col gap-1">
+                        <span>جوال: <a href={`tel:${b.phone.replace(/-/g, "")}`} className="font-semibold hover:underline font-mono">{b.phone}</a></span>
+                        {b.phoneAlt && (
+                          <span>وطنية: <a href={`tel:${b.phoneAlt.replace(/-/g, "")}`} className="font-semibold hover:underline font-mono">{b.phoneAlt}</a></span>
+                        )}
+                      </div>
                     </div>
                     <div className="flex items-center gap-3.5">
                       <MessageCircle className="w-5 h-5 shrink-0" style={{ color: b.accent }} />
@@ -196,53 +202,31 @@ function BranchPage() {
             <div>
               <div className="flex items-center gap-2.5 mb-4">
                 <Map className="w-5 h-5 text-white" />
-                <h3 className="font-bold text-base font-display">خريطة الفروع الموحدة بالرمال</h3>
+                <h3 className="font-bold text-base font-display">خريطة الفروع على Google Maps</h3>
               </div>
               <p className="text-xs text-zinc-400 leading-relaxed mb-6 font-light">
-                تقع فروع مجموعة التاج في مواقع استراتيجية بمدينة غزة (حي الرمال الراقي)، مما يضمن سهولة الوصول وسرعة توصيل الطلبات الساخنة إلى منازلكم.
+                تقع فروع مجموعة التاج في شارع الرمال - شارع اليرموك بمدينة غزة، مما يضمن سهولة الوصول وسرعة توصيل الطلبات الساخنة إلى منازلكم.
               </p>
 
-              <div className="aspect-[4/3] w-full rounded-2xl border border-white/5 bg-black/60 relative overflow-hidden flex items-center justify-center">
-                <div className="absolute inset-0 opacity-10 bg-[linear-gradient(rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
-                
-                <div className="absolute h-7 w-full bg-zinc-900/60 top-1/3 -rotate-3 border-y border-white/5 flex items-center justify-center">
-                  <span className="text-[8px] text-zinc-500 font-extrabold tracking-widest font-arabic">شارع الرمال الرئيسي</span>
-                </div>
-                <div className="absolute w-7 h-full bg-zinc-900/60 right-1/4 rotate-6 border-x border-white/5 flex items-center justify-center">
-                  <span className="text-[8px] text-zinc-500 font-extrabold tracking-widest rotate-90 font-arabic">مفترق المجلس التشريعي</span>
-                </div>
-
-                <div className="absolute top-1/4 right-1/3 flex flex-col items-center animate-bounce">
-                  <div className="bg-[#D4AF37] w-7.5 h-7.5 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
-                    <img src="/logos/rest-main.svg" className="w-4 h-4 object-contain" alt="" />
-                  </div>
-                  <span className="text-[9px] font-extrabold bg-black/90 px-2 py-0.5 rounded border border-[#D4AF37]/30 mt-1 shadow-md text-[#D4AF37] font-display">مطعم التاج</span>
-                </div>
-
-                <div className="absolute bottom-1/4 right-1/2 flex flex-col items-center animate-bounce" style={{ animationDelay: "0.2s" }}>
-                  <div className="bg-[#F9B219] w-7.5 h-7.5 rounded-full flex items-center justify-center shadow-lg border-2 border-white">
-                    <img src="/logos/cafe-main.svg" className="w-4 h-4 object-contain" alt="" />
-                  </div>
-                  <span className="text-[9px] font-extrabold bg-black/90 px-2 py-0.5 rounded border border-[#F9B219]/30 mt-1 shadow-md text-[#F9B219] font-display">تاج مود كافيه</span>
-                </div>
-
-                <div className="absolute top-1/2 right-1/6 flex items-center gap-1.5 opacity-50">
-                  <div className="w-2 h-2 bg-zinc-500 rounded-full"></div>
-                  <span className="text-[8px] text-zinc-500">بنك فلسطين</span>
-                </div>
-                <div className="absolute bottom-1/3 left-1/4 flex items-center gap-1.5 opacity-50">
-                  <div className="w-2 h-2 bg-zinc-500 rounded-full"></div>
-                  <span className="text-[8px] text-zinc-500">المجلس التشريعي</span>
-                </div>
+              <div className="aspect-[4/3] w-full rounded-2xl border border-white/10 bg-black overflow-hidden relative shadow-2xl">
+                <iframe 
+                  src="https://maps.google.com/maps?q=Yarmouk%20Street,%20Gaza&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+                  width="100%" 
+                  height="100%" 
+                  style={{ border: 0, filter: "grayscale(100%) invert(92%) contrast(120%) brightness(90%)" }} 
+                  allowFullScreen={false} 
+                  loading="lazy"
+                  title="موقع فروع مجموعة التاج على الخريطة"
+                ></iframe>
               </div>
             </div>
 
-            <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] text-zinc-500 font-light">
+            <div className="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-[10px] text-zinc-500 font-light font-arabic">
               <span className="flex items-center gap-1">
                 <Navigation className="w-3.5 h-3.5 text-white" />
-                <span>إحداثيات مدينة غزة - الرمال</span>
+                <span>غزة، شارع اليرموك</span>
               </span>
-              <span>رقم التوصيل الموحد: 0599000000</span>
+              <span>الرقم الموحد: 059-310-4000</span>
             </div>
 
           </div>

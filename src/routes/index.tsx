@@ -48,7 +48,7 @@ function Landing() {
           href="/restaurant"
           image={restaurantHero}
           title="مطعم التاج"
-          subtitle="نكهات أصيلة • مشاوي وشاورما"
+          subtitle="أشهى الأكل الشرقي والغربي"
           accent="#D4AF37"
           overlayFrom="rgba(80,0,16,0.55)"
           overlayTo="rgba(0,0,0,0.85)"
@@ -62,7 +62,7 @@ function Landing() {
           href="/cafe"
           image={cafeHero}
           title="تاج مود كافيه"
-          subtitle="قهوة مختصة • حلويات وكريب"
+          subtitle="تاج مود .. لكل مود😍 بار - كافي - جلسات هادئة"
           accent="#C97B63"
           overlayFrom="rgba(255, 220, 200, 0.25)"
           overlayTo="rgba(80, 40, 30, 0.7)"

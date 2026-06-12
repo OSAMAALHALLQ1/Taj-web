@@ -16,7 +16,7 @@ export const Route = createFileRoute("/contact")({
 });
 
 function ContactPage() {
-  const [restaurantWhatsapp, setRestaurantWhatsapp] = useState("970590000001");
+  const [restaurantWhatsapp, setRestaurantWhatsapp] = useState("970593104000");
   const [cafeWhatsapp, setCafeWhatsapp] = useState("970590000002");
 
   useEffect(() => {
@@ -53,10 +53,11 @@ function ContactPage() {
       id: "restaurant",
       name: "مطعم التاج",
       instagram: "altaj_rest",
-      address: "غزة — شارع الرمال الرئيسي (مقابل بنك فلسطين)",
+      address: "غزة — الرمال — شارع اليرموك (شرق مفترق الزهارنة - عمارة التاج هوم 1)",
       hours: "١١:٠٠ صباحاً — ١٢:٠٠ منتصف الليل",
       whatsapp: restaurantWhatsapp,
       phone: restaurantWhatsapp,
+      phoneAlt: "056-691-4914",
       accent: "#D4AF37",
       hoverBorder: "hover:border-[#D4AF37]/50",
       iconSrc: "/logos/rest-main.svg"
@@ -65,7 +66,7 @@ function ContactPage() {
       id: "cafe",
       name: "تاج مود كافيه",
       instagram: "tajmood_cafe",
-      address: "غزة — شارع الرمال (بجوار المجلس التشريعي)",
+      address: "غزة — شارع اليرموك (بجوار مطعم التاج)",
       hours: "٠٤:٠٠ صباحاً — ١٢:٠٠ منتصف الليل",
       whatsapp: cafeWhatsapp,
       phone: cafeWhatsapp,
@@ -146,11 +147,14 @@ function ContactPage() {
                     <MapPin className="w-5 h-5 shrink-0 mt-0.5" style={{ color: b.accent }} />
                     <span>{b.address}</span>
                   </div>
-                  <div className="flex items-center gap-3.5 text-zinc-400">
-                    <Phone className="w-5 h-5 shrink-0" style={{ color: b.accent }} />
-                    <a href={`tel:${b.phone}`} className="hover:text-white transition font-mono font-medium">
-                      {formatDisplayPhone(b.phone)}
-                    </a>
+                  <div className="flex items-start gap-3.5 text-zinc-400">
+                    <Phone className="w-5 h-5 shrink-0 mt-0.5" style={{ color: b.accent }} />
+                    <div className="flex flex-col gap-1">
+                      <span>جوال: <a href={`tel:${b.phone}`} className="hover:text-white transition font-mono font-medium">{formatDisplayPhone(b.phone)}</a></span>
+                      {b.phoneAlt && (
+                        <span>وطنية: <a href={`tel:${b.phoneAlt.replace(/-/g, "")}`} className="hover:text-white transition font-mono font-medium">{b.phoneAlt}</a></span>
+                      )}
+                    </div>
                   </div>
                   <div className="flex items-center gap-3.5 text-zinc-400">
                     <Clock className="w-5 h-5 shrink-0" style={{ color: b.accent }} />

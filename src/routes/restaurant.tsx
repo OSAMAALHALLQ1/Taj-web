@@ -14,8 +14,8 @@ export const Route = createFileRoute("/restaurant")({
     <MenuView
       branch="restaurant"
       brandName="مطعم التاج"
-      tagline="نكهات أصيلة • مشاوي وشاورما بجودة فاخرة"
-      whatsapp="970590000000"
+      tagline="مطعم التاج لأشهى الأكل الشرقي والغربي"
+      whatsapp="970593104000"
       instagram="altaj_rest"
       themeClass="theme-restaurant"
     />

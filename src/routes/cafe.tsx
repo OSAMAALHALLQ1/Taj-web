@@ -14,8 +14,8 @@ export const Route = createFileRoute("/cafe")({
     <MenuView
       branch="cafe"
       brandName="تاج مود كافيه"
-      tagline="قهوة مختصة • حلويات • أجواء دافئة"
-      whatsapp="970590000000"
+      tagline="تاج مود .. لكل مود😍 بار - كافي - جلسات هادئة"
+      whatsapp="970590000002"
       instagram="tajmood_cafe"
       themeClass="theme-cafe"
     />
