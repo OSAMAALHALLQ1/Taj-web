@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="636" viewBox="0 0 900 636" direction="rtl">
+  <style>
+    .bg { fill: #f8fafc; }
+    .card { fill: #ffffff; stroke: #e2e8f0; stroke-width: 2; }
+    .primary { fill: #0f766e; }
+    .muted { fill: #64748b; font-size: 24px; font-family: Arial, sans-serif; }
+    .title { fill: #ffffff; font-size: 46px; font-weight: 800; font-family: Arial, sans-serif; }
+    .subtitle { fill: #ccfbf1; font-size: 24px; font-family: Arial, sans-serif; }
+    .label { fill: #64748b; font-size: 22px; font-family: Arial, sans-serif; }
+    .value { fill: #0f172a; font-size: 26px; font-weight: 700; font-family: Arial, sans-serif; }
+    .head { fill: #0f172a; font-size: 22px; font-weight: 800; font-family: Arial, sans-serif; }
+    .cell { fill: #0f172a; font-size: 22px; font-family: Arial, sans-serif; text-anchor: end; }
+    .bold { font-weight: 700; }
+    .center { text-anchor: middle; }
+    .total { text-anchor: start; font-weight: 800; }
+    .big { fill: #0f766e; font-size: 42px; font-weight: 900; font-family: Arial, sans-serif; }
+  </style>
+  <rect width="100%" height="100%" class="bg"/>
+  <rect x="40" y="40" width="820" height="556" rx="26" class="card"/>
+  <rect x="40" y="40" width="820" height="150" rx="26" class="primary"/>
+  <text x="820" y="105" class="title">رواق</text>
+  <text x="820" y="148" class="subtitle">فاتورة بيع رقمية</text>
+  <text x="80" y="105" class="subtitle">inv-2026051302</text>
+  <text x="80" y="148" class="subtitle">١٧‏/٥‏/٢٠٢٦، ١:٠٢:٤٧ م</text>
+
+  <text x="820" y="235" class="label">الفرع</text>
+  <text x="820" y="270" class="value">فرع البيع السريع</text>
+  <text x="400" y="235" class="label">العميل</text>
+  <text x="400" y="270" class="value">عميل نقدي</text>
+
+  <rect x="60" y="300" width="780" height="46" fill="#f1f5f9"/>
+  <text x="805" y="330" class="head">الصنف</text>
+  <text x="500" y="330" class="head center">الكمية</text>
+  <text x="325" y="330" class="head center">السعر</text>
+  <text x="95" y="330" class="head total">المجموع</text>
+  
+        <g>
+          <rect x="60" y="300" width="780" height="58" fill="#ffffff" />
+          <text x="805" y="336" class="cell bold">فاتورة بيع</text>
+          <text x="500" y="336" class="cell center">١</text>
+          <text x="325" y="336" class="cell center">‏٧٢ ₪</text>
+          <text x="95" y="336" class="cell total">‏٧٢ ₪</text>
+        </g>
+      
+
+  <rect x="60" y="441" width="780" height="170" rx="18" fill="#f8fafc" stroke="#e2e8f0"/>
+  <text x="805" y="481" class="label">المجموع الفرعي</text>
+  <text x="95" y="481" class="value" text-anchor="start">‏٧٢ ₪</text>
+  <text x="805" y="519" class="label">الخصم</text>
+  <text x="95" y="519" class="value" text-anchor="start">‏٠ ₪</text>
+  <text x="805" y="557" class="label">الضريبة</text>
+  <text x="95" y="557" class="value" text-anchor="start">‏٠ ₪</text>
+  <text x="805" y="599" class="big">الإجمالي</text>
+  <text x="95" y="599" class="big" text-anchor="start">‏٧٢ ₪</text>
+
+  <text x="450" y="566" class="muted" text-anchor="middle">تم إصدار هذه الفاتورة بواسطة رواق</text>
+</svg>

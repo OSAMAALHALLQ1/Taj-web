@@ -1,0 +1,494 @@
+[
+  {
+    "arName": "ط¨ط±ط¬ط± ط¬ط¨ظ†ط©",
+    "enName": "Cheese Burger",
+    "url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDaGVlc2UlMjBCdXJnZXIlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYwMjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "cheese_burger.jpg"
+  },
+  {
+    "arName": "ط¯ط¨ظ„ ط¨ط±ط¬ط± ط¬ط¨ظ†ط©",
+    "enName": "Double Cheese Burger",
+    "url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxEb3VibGUlMjBDaGVlc2UlMjBCdXJnZXIlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYwMjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "double_cheese_burger.jpg"
+  },
+  {
+    "arName": "ط¨ط±ط¬ط± ظ…ط´ط±ظˆظ…",
+    "enName": "Mushroom Burger",
+    "url": "https://images.unsplash.com/photo-1549611016-3a70d82b5040?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxNdXNocm9vbSUyMEJ1cmdlciUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjAyNHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "mushroom_burger.jpg"
+  },
+  {
+    "arName": "ط¯ط¨ظ„ ط¨ط±ط¬ط± ظ…ط´ط±ظˆظ…",
+    "enName": "Double Mushroom Burger",
+    "url": "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxEb3VibGUlMjBNdXNocm9vbSUyMEJ1cmdlciUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjAyOHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "double_mushroom_burger.jpg"
+  },
+  {
+    "arName": "ط¨ط±ط¬ط± ط¯ط¬ط§ط¬",
+    "enName": "Chicken Burger",
+    "url": "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwQnVyZ2VyJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MDMwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_burger.jpg"
+  },
+  {
+    "arName": "ط¯ط¨ظ„ ط¨ط±ط¬ط± ط¯ط¬ط§ط¬",
+    "enName": "Double Chicken Burger",
+    "url": "https://images.unsplash.com/photo-1551782450-17144efb9c50?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxEb3VibGUlMjBDaGlja2VuJTIwQnVyZ2VyJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MDMyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "double_chicken_burger.jpg"
+  },
+  {
+    "arName": "ط¨ط±ط¬ط± ط¯ط¬ط§ط¬ ط³ط¨ط§ظٹط³ظٹ",
+    "enName": "Spicy Chicken Burger",
+    "url": "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxTcGljeSUyMENoaWNrZW4lMjBCdXJnZXIlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYwMzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "spicy_chicken_burger.jpg"
+  },
+  {
+    "arName": "ط¨ط±ط¬ط± ط²ظ†ط¬ط± ط¯ط¬ط§ط¬",
+    "enName": "Chicken Zinger Burger",
+    "url": "https://images.unsplash.com/photo-1603197095324-7ecbc1a05689?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwWmluZ2VyJTIwQnVyZ2VyJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MDM3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_zinger_burger.jpg"
+  },
+  {
+    "arName": "ط¨ط±ط¬ط± ط¯ط¬ط§ط¬ ظƒط±ظٹط³ط¨ظٹ",
+    "enName": "Crispy Chicken Burger",
+    "url": "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDcmlzcHklMjBDaGlja2VuJTIwQnVyZ2VyJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MDQwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "crispy_chicken_burger.jpg"
+  },
+  {
+    "arName": "ط±ط§ط¨ ط´ط§ظˆط±ظ…ط§",
+    "enName": "Shawarma Wrap",
+    "url": "https://images.unsplash.com/photo-1562059390-a761a084768e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxTaGF3YXJtYSUyMFdyYXAlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYwNDJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "shawarma_wrap.jpg"
+  },
+  {
+    "arName": "ط±ط§ط¨ ط´ط§ظˆط±ظ…ط§ ط³ط¨ط§ظٹط³ظٹ",
+    "enName": "Spicy Shawarma Wrap",
+    "url": "https://images.unsplash.com/photo-1529006557810-274b9b2fc783?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxTcGljeSUyMFNoYXdhcm1hJTIwV3JhcCUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjA0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "spicy_shawarma_wrap.jpg"
+  },
+  {
+    "arName": "ط´ط§ظˆط±ظ…ط§ ط¹ط±ط¨ظٹ ظ„ط­ظ…",
+    "enName": "Meat Shawarma Arabi",
+    "url": "https://images.unsplash.com/photo-1719282431723-9d0f4370d4bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxNZWF0JTIwU2hhd2FybWElMjBBcmFiaSUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjA0OXww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "meat_shawarma_arabi.jpg"
+  },
+  {
+    "arName": "ط³ط§ظ†ط¯ظˆظٹطھط´ ظپط§ظ‡ظٹطھط§ ط¯ط¬ط§ط¬",
+    "enName": "Chicken Fajita Sandwich",
+    "url": "https://images.unsplash.com/photo-1475090169767-40ed8d18f67d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwRmFqaXRhJTIwU2FuZHdpY2glMjBmb29kfGVufDB8MHx8fDE3ODEwMzYwNTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_fajita_sandwich.jpg"
+  },
+  {
+    "arName": "ط³ط§ظ†ط¯ظˆظٹطھط´ ظپط±ط§ظ†ط³ظٹط³ظƒظˆ ط¯ط¬ط§ط¬",
+    "enName": "Chicken Francisco Sandwich",
+    "url": "https://images.unsplash.com/photo-1670710029403-607db8eeec83?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwRnJhbmNpc2NvJTIwU2FuZHdpY2glMjBmb29kfGVufDB8MHx8fDE3ODEwMzYwNjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_francisco_sandwich.jpg"
+  },
+  {
+    "arName": "ط³ط§ظ†ط¯ظˆظٹطھط´ ظ‡ظˆطھ ط¯ظˆط¬",
+    "enName": "Hot Dog Sandwich",
+    "url": "https://images.unsplash.com/photo-1612392166886-ee8475b03af2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxIb3QlMjBEb2clMjBTYW5kd2ljaCUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjA2OHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "hot_dog_sandwich.jpg"
+  },
+  {
+    "arName": "ظ‡ظˆطھ ط¯ظˆط¬ ط¨ط§ظ„ط¬ط¨ظ†ط©",
+    "enName": "Hot Dog with Cheese",
+    "url": "https://images.unsplash.com/photo-1541214113241-21578d2d9b62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxIb3QlMjBEb2clMjB3aXRoJTIwQ2hlZXNlJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MDcxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "hot_dog_with_cheese.jpg"
+  },
+  {
+    "arName": "ط³ط§ظ†ط¯ظˆظٹطھط´ ظƒظ„ظˆط¨",
+    "enName": "Club Sandwich",
+    "url": "https://images.unsplash.com/photo-1553909489-cd47e0907980?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDbHViJTIwU2FuZHdpY2glMjBmb29kfGVufDB8MHx8fDE3ODEwMzYwODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "club_sandwich.jpg"
+  },
+  {
+    "arName": "ظƒظ„ظˆط¨ ط²ظ†ط¬ط±",
+    "enName": "Zinger Club Sandwich",
+    "url": "https://images.unsplash.com/photo-1553909489-cd47e0907980?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxaaW5nZXIlMjBDbHViJTIwU2FuZHdpY2glMjBmb29kfGVufDB8MHx8fDE3ODEwMzYwODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "zinger_club_sandwich.jpg"
+  },
+  {
+    "arName": "ط¨ط·ط§ط·ط³ ظ…ظ‚ظ„ظٹط©",
+    "enName": "French Fries",
+    "url": "https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxGcmVuY2glMjBGcmllcyUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjA4OXww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "french_fries.jpg"
+  },
+  {
+    "arName": "ط¨ط·ط§ط·ط³ ط¨ط§ظ„ط¬ط¨ظ†ط©",
+    "enName": "French Fries with Cheese",
+    "url": "https://images.unsplash.com/photo-1609530127564-bee93ebe1c9e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxGcmVuY2glMjBGcmllcyUyMHdpdGglMjBDaGVlc2UlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYwOTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "french_fries_with_cheese.jpg"
+  },
+  {
+    "arName": "ط¨ط·ط§ط·ط³ ظˆط¯ط¬ط² ظ…ط¨ظ‡ط±ط©",
+    "enName": "Spicy Potato Wedges",
+    "url": "https://images.unsplash.com/photo-1589311671025-647c03293eaa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxTcGljeSUyMFBvdGF0byUyMFdlZGdlcyUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjA5NHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "spicy_potato_wedges.jpg"
+  },
+  {
+    "arName": "ط¨ط·ط§ط·ط³ ظƒظٹط±ظ„ظٹ",
+    "enName": "Curly Fries",
+    "url": "https://images.unsplash.com/photo-1767469576632-ccabc373871f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDdXJseSUyMEZyaWVzJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MDk2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "curly_fries.jpg"
+  },
+  {
+    "arName": "ط­ظ„ظ‚ط§طھ ط§ظ„ط¨طµظ„",
+    "enName": "Onion Rings",
+    "url": "https://images.unsplash.com/photo-1625938146369-adc83368bda7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxPbmlvbiUyMFJpbmdzJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MDk4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "onion_rings.jpg"
+  },
+  {
+    "arName": "ط£طµط§ط¨ط¹ ط§ظ„ظ…ظˆط²ط§ط±ظٹظ„ط§",
+    "enName": "Mozzarella Sticks",
+    "url": "https://images.unsplash.com/photo-1734774924912-dcbb467f8599?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxNb3p6YXJlbGxhJTIwU3RpY2tzJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MTAxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "mozzarella_sticks.jpg"
+  },
+  {
+    "arName": "ط¯ط¬ط§ط¬ ظ†ط§ط¬طھط³",
+    "enName": "Chicken Nuggets",
+    "url": "https://images.unsplash.com/photo-1619881590738-a111d176d906?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwTnVnZ2V0cyUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjEwNnww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_nuggets.jpg"
+  },
+  {
+    "arName": "ط¯ط¬ط§ط¬ ط³طھط±ظٹط¨ط³",
+    "enName": "Chicken Strips",
+    "url": "https://images.unsplash.com/photo-1605291581926-df4bf7ee3e89?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwU3RyaXBzJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MTA4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_strips.jpg"
+  },
+  {
+    "arName": "ط£ط¬ظ†ط­ط© ط¯ط¬ط§ط¬",
+    "enName": "Chicken Wings",
+    "url": "https://images.unsplash.com/photo-1650939986300-ce9609921fa7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwV2luZ3MlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYxMTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_wings.jpg"
+  },
+  {
+    "arName": "ط­ظ…طµ",
+    "enName": "Hummus",
+    "url": "https://images.unsplash.com/photo-1637949385162-e416fb15b2ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxIdW1tdXMlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYxMTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "hummus.jpg"
+  },
+  {
+    "arName": "ط­ظ…طµ ط¨ط§ظ„ظ„ط­ظ…ط©",
+    "enName": "Hummus with Meat",
+    "url": "https://images.unsplash.com/photo-1637949385162-e416fb15b2ce?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxIdW1tdXMlMjB3aXRoJTIwTWVhdCUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjExNHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "hummus_with_meat.jpg"
+  },
+  {
+    "arName": "ظ…طھط¨ظ„",
+    "enName": "Mutabbal",
+    "url": "https://images.unsplash.com/photo-1593252719532-53f183016149?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxNdXRhYmJhbCUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjExNXww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "mutabbal.jpg"
+  },
+  {
+    "arName": "ط«ظˆظ…ظٹط©",
+    "enName": "Garlic Paste",
+    "url": "https://images.unsplash.com/photo-1636210589096-a53d5dacd702?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxHYXJsaWMlMjBQYXN0ZSUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjExOXww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "garlic_paste.jpg"
+  },
+  {
+    "arName": "ط«ظˆظ…ظٹط© ط³ط¨ط§ظٹط³ظٹ",
+    "enName": "Spicy Garlic Paste",
+    "url": "https://images.unsplash.com/photo-1612192666510-e7ccf6e5f359?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxTcGljeSUyMEdhcmxpYyUyMFBhc3RlJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MTIxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "spicy_garlic_paste.jpg"
+  },
+  {
+    "arName": "طµط­ظ† ظپظ„ط§ظپظ„",
+    "enName": "Falafel Plate",
+    "url": "https://images.unsplash.com/photo-1700513971603-eda40374ba0a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxGYWxhZmVsJTIwUGxhdGUlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYxMjN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "falafel_plate.jpg"
+  },
+  {
+    "arName": "ط³ظ…ط¨ظˆط³ط©",
+    "enName": "Samosa",
+    "url": "https://images.unsplash.com/photo-1601050690597-df0568f70950?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxTYW1vc2ElMjBmb29kfGVufDB8MHx8fDE3ODEwMzYxMjV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "samosa.jpg"
+  },
+  {
+    "arName": "ط³ط¨ط±ظٹظ†ط¬ ط±ظˆظ„",
+    "enName": "Spring Rolls",
+    "url": "https://images.unsplash.com/photo-1695712641569-05eee7b37b6d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxTcHJpbmclMjBSb2xscyUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjEzMHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "spring_rolls.jpg"
+  },
+  {
+    "arName": "ط³ظ„ط·ط© ظپطھظˆط´",
+    "enName": "Fatoush Salad",
+    "url": "https://images.unsplash.com/photo-1708184528305-33ce7daced65?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxGYXRvdXNoJTIwU2FsYWQlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYxMzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "fatoush_salad.jpg"
+  },
+  {
+    "arName": "طھط¨ظˆظ„ط©",
+    "enName": "Tabbouleh",
+    "url": "https://images.unsplash.com/photo-1771285119408-04cca3b35036?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxUYWJib3VsZWglMjBmb29kfGVufDB8MHx8fDE3ODEwMzYxMzR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "tabbouleh.jpg"
+  },
+  {
+    "arName": "ط³ظ„ط·ط© ط³ظٹط²ط±",
+    "enName": "Caesar Salad",
+    "url": "https://images.unsplash.com/photo-1746211108786-ca20c8f80ecd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDYWVzYXIlMjBTYWxhZCUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjEzN3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "caesar_salad.jpg"
+  },
+  {
+    "arName": "ط³ظ„ط·ط© ط³ظٹط²ط± ط¨ط§ظ„ط¯ط¬ط§ط¬",
+    "enName": "Chicken Caesar Salad",
+    "url": "https://images.unsplash.com/photo-1550304943-4f24f54ddde9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwQ2Flc2FyJTIwU2FsYWQlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYxMzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_caesar_salad.jpg"
+  },
+  {
+    "arName": "ط³ظ„ط·ط© ظٹظˆظ†ط§ظ†ظٹط©",
+    "enName": "Greek Salad",
+    "url": "https://images.unsplash.com/photo-1606735584785-1848fdcaea57?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxHcmVlayUyMFNhbGFkJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MTQxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "greek_salad.jpg"
+  },
+  {
+    "arName": "ط³ظ„ط·ط© ظƒظˆظ„ط³ظ„ظˆ",
+    "enName": "Coleslaw Salad",
+    "url": "https://images.unsplash.com/photo-1573403707491-38a4ea19edc1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDb2xlc2xhdyUyMFNhbGFkJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2MTQ2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "coleslaw_salad.jpg"
+  },
+  {
+    "arName": "ط³ظ„ط·ط© ط°ط±ط©",
+    "enName": "Corn Salad",
+    "url": "https://images.unsplash.com/photo-1708184528305-33ce7daced65?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTJ8MHwxfHNlYXJjaHwxfHxDb3JuJTIwU2FsYWQlMjBmb29kfGVufDB8MHx8fDE3ODEwMzYxNDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "corn_salad.jpg"
+  },
+  {
+    "arName": "شوربة عدس",
+    "enName": "Lentil Soup",
+    "url": "https://images.unsplash.com/photo-1568886875985-ef8a500f8d17?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxMZW50aWwlMjBTb3VwJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODAyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "lentil_soup.jpg"
+  },
+  {
+    "arName": "شوربة فطر",
+    "enName": "Mushroom Soup",
+    "url": "https://images.unsplash.com/photo-1619860859762-0569749bc607?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxNdXNocm9vbSUyMFNvdXAlMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4MDR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "mushroom_soup.jpg"
+  },
+  {
+    "arName": "شوربة كريمة الدجاج",
+    "enName": "Chicken Cream Soup",
+    "url": "https://images.unsplash.com/photo-1616501268826-ee9731c915d4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwQ3JlYW0lMjBTb3VwJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODA2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_cream_soup.jpg"
+  },
+  {
+    "arName": "شوربة فواكه البحر",
+    "enName": "Seafood Soup",
+    "url": "https://images.unsplash.com/photo-1618055301293-494ab4c71f9f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxTZWFmb29kJTIwU291cCUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjgwOHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "seafood_soup.jpg"
+  },
+  {
+    "arName": "شوربة خضار",
+    "enName": "Vegetable Soup",
+    "url": "https://images.unsplash.com/photo-1469307517101-0b99d8fb0c33?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxWZWdldGFibGUlMjBTb3VwJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODEwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "vegetable_soup.jpg"
+  },
+  {
+    "arName": "بيتزا مارغريتا",
+    "enName": "Margherita Pizza",
+    "url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxNYXJnaGVyaXRhJTIwUGl6emElMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4MTJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "margherita_pizza.jpg"
+  },
+  {
+    "arName": "بيتزا خضار",
+    "enName": "Vegetable Pizza",
+    "url": "https://images.unsplash.com/photo-1590947132387-155cc02f3212?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxWZWdldGFibGUlMjBQaXp6YSUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjgxNHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "vegetable_pizza.jpg"
+  },
+  {
+    "arName": "بيتزا بيبروني",
+    "enName": "Pepperoni Pizza",
+    "url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxQZXBwZXJvbmklMjBQaXp6YSUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjgxNnww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "pepperoni_pizza.jpg"
+  },
+  {
+    "arName": "بيتزا دجاج باربكيو",
+    "enName": "Chicken BBQ Pizza",
+    "url": "https://images.unsplash.com/photo-1652952561151-97e82f26c336?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwQkJRJTIwUGl6emElMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4MTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_bbq_pizza.jpg"
+  },
+  {
+    "arName": "بيتزا الأجبان الأربعة",
+    "enName": "Four Cheese Pizza",
+    "url": "https://images.unsplash.com/photo-1513104890138-7c749659a591?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxGb3VyJTIwQ2hlZXNlJTIwUGl6emElMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4MjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "four_cheese_pizza.jpg"
+  },
+  {
+    "arName": "باستا ألفريدو بالدجاج",
+    "enName": "Chicken Alfredo Pasta",
+    "url": "https://images.unsplash.com/photo-1645112411341-6c4fd023714a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwQWxmcmVkbyUyMFBhc3RhJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODIyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_alfredo_pasta.jpg"
+  },
+  {
+    "arName": "بيني أرابياتا سبايسي",
+    "enName": "Penne Arrabbiata",
+    "url": "https://images.unsplash.com/photo-1630151317550-db97d275ce2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxQZW5uZSUyMEFycmFiYmlhdGElMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4MjR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "penne_arrabbiata.jpg"
+  },
+  {
+    "arName": "بروستد دجاج",
+    "enName": "Broasted Chicken",
+    "url": "https://images.unsplash.com/photo-1652545296821-09a023a9fd08?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxCcm9hc3RlZCUyMENoaWNrZW4lMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4Mjd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "broasted_chicken.jpg"
+  },
+  {
+    "arName": "نصف دجاجة مشوية",
+    "enName": "Grilled Chicken Half",
+    "url": "https://images.unsplash.com/photo-1670398564097-0762e1b30b3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxHcmlsbGVkJTIwQ2hpY2tlbiUyMEhhbGYlMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4Mjl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "grilled_chicken_half.jpg"
+  },
+  {
+    "arName": "مشاوي مشكلة",
+    "enName": "Mixed Grill",
+    "url": "https://images.unsplash.com/photo-1702827496398-b906ab2dd926?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxNaXhlZCUyMEdyaWxsJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODMxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "mixed_grill.jpg"
+  },
+  {
+    "arName": "شيش طاووق",
+    "enName": "Shish Tawook",
+    "url": "https://images.unsplash.com/photo-1777716003985-68fed08d0c7e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxTaGlzaCUyMFRhd29vayUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjgzM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "shish_tawook.jpg"
+  },
+  {
+    "arName": "كباب لحم",
+    "enName": "Meat Kebab",
+    "url": "https://images.unsplash.com/photo-1532636875304-0c89119d9b4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxNZWF0JTIwS2ViYWIlMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4MzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "meat_kebab.jpg"
+  },
+  {
+    "arName": "كباب دجاج",
+    "enName": "Chicken Kebab",
+    "url": "https://images.unsplash.com/photo-1599487488170-d11ec9c172f0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwS2ViYWIlMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4Mzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_kebab.jpg"
+  },
+  {
+    "arName": "ريش غنم",
+    "enName": "Lamb Chops",
+    "url": "https://images.unsplash.com/photo-1692106914406-093b0df73a10?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxMYW1iJTIwQ2hvcHMlMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4Mzl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "lamb_chops.jpg"
+  },
+  {
+    "arName": "برياني دجاج",
+    "enName": "Chicken Biryani",
+    "url": "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwQmlyeWFuaSUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjg0Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_biryani.jpg"
+  },
+  {
+    "arName": "برياني لحم",
+    "enName": "Meat Biryani",
+    "url": "https://images.unsplash.com/photo-1631515243349-e0cb75fb8d3a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxNZWF0JTIwQmlyeWFuaSUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjg0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "meat_biryani.jpg"
+  },
+  {
+    "arName": "كبسة دجاج",
+    "enName": "Chicken Kabsa",
+    "url": "https://images.unsplash.com/photo-1672477179695-7276b0602fa9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxDaGlja2VuJTIwS2Fic2ElMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chicken_kabsa.jpg"
+  },
+  {
+    "arName": "كبسة لحم",
+    "enName": "Meat Kabsa",
+    "url": "https://images.unsplash.com/photo-1739909364240-95e95db8dbc1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxNZWF0JTIwS2Fic2ElMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4NDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "meat_kabsa.jpg"
+  },
+  {
+    "arName": "مندي دجاج",
+    "enName": "Mandi Chicken",
+    "url": "https://images.unsplash.com/photo-1780318564055-fdd53b762ae0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxNYW5kaSUyMENoaWNrZW4lMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4NTB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "mandi_chicken.jpg"
+  },
+  {
+    "arName": "تشيز كيك",
+    "enName": "Cheesecake",
+    "url": "https://images.unsplash.com/photo-1524351199678-941a58a3df50?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxDaGVlc2VjYWtlJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODUzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "cheesecake.jpg"
+  },
+  {
+    "arName": "كيكة الشوكولاتة",
+    "enName": "Chocolate Cake",
+    "url": "https://images.unsplash.com/photo-1588195538326-c5b1e9f80a1b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxDaG9jb2xhdGUlMjBDYWtlJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODU2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "chocolate_cake.jpg"
+  },
+  {
+    "arName": "تيراميسو",
+    "enName": "Tiramisu",
+    "url": "https://images.unsplash.com/photo-1769434128978-5bdcb5c7ee2a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxUaXJhbWlzdSUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjg1N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "tiramisu.jpg"
+  },
+  {
+    "arName": "آيس كريم",
+    "enName": "Ice Cream",
+    "url": "https://images.unsplash.com/photo-1629385701021-fcd568a743e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxJY2UlMjBDcmVhbSUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjg2MHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "ice_cream.jpg"
+  },
+  {
+    "arName": "سلطة فواكه",
+    "enName": "Fruit Salad",
+    "url": "https://images.unsplash.com/photo-1613082487279-1e16f1e81505?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxGcnVpdCUyMFNhbGFkJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODYyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "fruit_salad.jpg"
+  },
+  {
+    "arName": "بيبسي",
+    "enName": "Pepsi",
+    "url": "https://images.unsplash.com/photo-1726512354421-814fde6e35e8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxQZXBzaSUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjg2NHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "pepsi.jpg"
+  },
+  {
+    "arName": "سفن اب",
+    "enName": "7Up",
+    "url": "https://images.unsplash.com/photo-1622766815178-641bef2b4630?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHw3VXAlMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4NjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "7up.jpg"
+  },
+  {
+    "arName": "عصير برتقال طازج",
+    "enName": "Fresh Orange Juice",
+    "url": "https://images.unsplash.com/photo-1613478223719-2ab802602423?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxGcmVzaCUyME9yYW5nZSUyMEp1aWNlJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODY4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "fresh_orange_juice.jpg"
+  },
+  {
+    "arName": "عصير ليمون بالنعناع",
+    "enName": "Lemon Mint Juice",
+    "url": "https://images.unsplash.com/photo-1507281549113-040fcfef650e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxMZW1vbiUyME1pbnQlMjBKdWljZSUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjg3MHww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "lemon_mint_juice.jpg"
+  },
+  {
+    "arName": "عصير فراولة",
+    "enName": "Strawberry Juice",
+    "url": "https://images.unsplash.com/photo-1677694682771-f2a1eaa7b8d9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxTdHJhd2JlcnJ5JTIwSnVpY2UlMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4NzN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "strawberry_juice.jpg"
+  },
+  {
+    "arName": "عصير مانجو",
+    "enName": "Mango Juice",
+    "url": "https://images.unsplash.com/photo-1635716279493-d1e30afc25a0?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxNYW5nbyUyMEp1aWNlJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODc1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "mango_juice.jpg"
+  },
+  {
+    "arName": "مياه معدنية",
+    "enName": "Water",
+    "url": "https://images.unsplash.com/photo-1535914254981-b5012eebbd15?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxXYXRlciUyMGZvb2R8ZW58MHwwfHx8MTc4MTAzNjg3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "water.jpg"
+  },
+  {
+    "arName": "شاي",
+    "enName": "Tea",
+    "url": "https://images.unsplash.com/photo-1521012012373-6a85bade18da?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxUZWElMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4ODB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "tea.jpg"
+  },
+  {
+    "arName": "قهوة عربية",
+    "enName": "Arabic Coffee",
+    "url": "https://images.unsplash.com/photo-1618597778480-8c5d3f2d3ba8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxBcmFiaWMlMjBDb2ZmZWUlMjBmb29kfGVufDB8MHx8fDE3ODEwMzY4ODJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "arabic_coffee.jpg"
+  },
+  {
+    "arName": "قهوة تركية",
+    "enName": "Turkish Coffee",
+    "url": "https://images.unsplash.com/photo-1506778020041-0ea35027d019?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxUdXJraXNoJTIwQ29mZmVlJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODg0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "turkish_coffee.jpg"
+  },
+  {
+    "arName": "كابتشينو",
+    "enName": "Cappuccino",
+    "url": "https://images.unsplash.com/photo-1506372023823-741c83b836fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w5NzM0NTZ8MHwxfHNlYXJjaHwxfHxDYXBwdWNjaW5vJTIwZm9vZHxlbnwwfDB8fHwxNzgxMDM2ODg2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+    "filename": "cappuccino.jpg"
+  }
+]
