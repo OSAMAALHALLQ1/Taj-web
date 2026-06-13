@@ -4,6 +4,7 @@ import {
   Search, ArrowRight, MessageCircle, ShoppingBag, Plus, Minus, 
   Trash2, X, MapPin, Phone, User, Clock, ClipboardList, Info, Instagram, Facebook 
 } from "lucide-react";
+import { useSharedCart } from "@/components/hooks/useSharedCart";
 import { categoryImages, menuData, type Branch, type MenuItem } from "@/data/menu";
 import { supabase } from "@/lib/supabase";
 import { AnimatedLogoLoader } from "./AnimatedLogoLoader";
@@ -85,7 +86,7 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
   }, []);
   
   // Cart state
-  const [cart, setCart] = useState<CartItem[]>([]);
+  const { cart, setCart, addItem, changeItemQty, deleteItem } = useSharedCart();
   const [openCart, setOpenCart] = useState(false);
   const [checkoutStep, setCheckoutStep] = useState(1);
   const [selectedItem, setSelectedItem] = useState<MenuItem | null>(null);
@@ -220,47 +221,13 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
 
   // Cart helper functions
   const addToCart = (item: MenuItem, qty: number, notes: string) => {
-    const cleanNotes = notes.trim();
-    setCart((prevCart) => {
-      const existingIdx = prevCart.findIndex(
-        (c) => c.title === item.title && (c.notes || "") === cleanNotes
-      );
-      if (existingIdx > -1) {
-        const updated = [...prevCart];
-        updated[existingIdx].qty += qty;
-        return updated;
-      } else {
-        return [...prevCart, {
-          title: item.title,
-          price: item.price,
-          qty,
-          notes: cleanNotes,
-          category: item.category
-        }];
-      }
-    });
-    
-    // Increment active carts simulation in localStorage
+    // Use shared hook to add item
+    addItem(item, qty, notes);
+    // Increment active carts simulation in localStorage (preserve existing behavior)
     const cartsCountKey = "taj_admin_live_carts_count";
     const count = parseInt(localStorage.getItem(cartsCountKey) || "3");
     localStorage.setItem(cartsCountKey, (count + 1).toString());
   };
-
-  const updateCartQty = (idx: number, change: number) => {
-    setCart((prevCart) => {
-      const updated = [...prevCart];
-      updated[idx].qty += change;
-      if (updated[idx].qty <= 0) {
-        updated.splice(idx, 1);
-      }
-      return updated;
-    });
-  };
-
-  const removeFromCart = (idx: number) => {
-    setCart((prevCart) => prevCart.filter((_, i) => i !== idx));
-  };
-
   const cartTotalItems = useMemo(() => cart.reduce((acc, it) => acc + it.qty, 0), [cart]);
   
   const cartSubtotal = useMemo(() => {
@@ -291,6 +258,14 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
   const validateGazaPhone = (phone: string) => {
     const cleanPhone = phone.replace(/[\s-]/g, "");
     return /^(059|056)\d{7}$/.test(cleanPhone);
+  };
+
+  const updateCartQty = (idx: number, change: number) => {
+    changeItemQty(idx, change);
+  };
+
+  const removeFromCart = (idx: number) => {
+    deleteItem(idx);
   };
 
   const openItemDetails = (item: MenuItem) => {
