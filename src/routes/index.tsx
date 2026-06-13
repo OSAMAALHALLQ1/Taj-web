@@ -87,8 +87,6 @@ function Landing() {
         <Link to="/branch" className="hover:text-[#D4AF37] transition">موقع الفرع</Link>
         <span className="w-1 h-1 rounded-full bg-white/30" />
         <Link to="/contact" className="hover:text-[#D4AF37] transition">تواصل معنا</Link>
-        <span className="w-1 h-1 rounded-full bg-white/30" />
-        <Link to="/admin" className="hover:text-[#D4AF37] transition">لوحة التحكم</Link>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
-import { ArrowLeft, MapPin, Clock, Phone, MessageCircle, Navigation, Map, Sparkles } from "lucide-react";
+import { ArrowRight, MapPin, Clock, Phone, MessageCircle, Navigation, Map, Sparkles } from "lucide-react";
 
 export const Route = createFileRoute("/branch")({
   head: () => ({
@@ -88,24 +88,31 @@ function BranchPage() {
       <div className="pointer-events-none absolute top-0 right-0 w-[500px] h-[500px] bg-[#D4AF37]/10 rounded-full blur-[120px] pointer-events-none -z-10 animate-float-slow"></div>
       <div className="pointer-events-none absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#C97B63]/10 rounded-full blur-[120px] pointer-events-none -z-10 animate-float-slow"></div>
 
-      <header className="sticky top-4 z-40 max-w-6xl mx-auto w-full px-4 mb-8">
-        <div className="flex items-center justify-between bg-black/85 backdrop-blur-xl border border-white/10 shadow-lg rounded-full px-5 py-3">
-          <Link to="/" className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-zinc-300 hover:text-white hover:bg-white/10 hover:border-[#D4AF37]/30 transition-all shadow-md">
-            <ArrowLeft className="w-4 h-4 text-[#D4AF37]" />
-            <span className="text-xs font-bold font-arabic">العودة للرئيسية</span>
-          </Link>
-          <div className="flex items-center gap-2.5">
-            <img 
-              src="/logos/taj-group.png" 
-              className="w-8 h-8 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]" 
-              alt="Taj Group" 
-            />
-            <span className="font-extrabold text-sm tracking-wide bg-gradient-to-l from-white to-zinc-400 bg-clip-text text-transparent">
-              مجموعة التاج
-            </span>
+      <div className="relative z-50 px-4 max-w-6xl mx-auto w-full transition-all mt-4 mb-8">
+        <header className="flex flex-col md:flex-row items-center justify-between bg-black/85 backdrop-blur-xl border border-white/10 shadow-lg rounded-[1.5rem] md:rounded-full px-4 md:px-5 py-3 md:py-2.5 gap-3 md:gap-0">
+          <div className="flex items-center justify-between w-full md:w-auto">
+            <Link to="/" className="flex items-center gap-2">
+              <img 
+                src="/logos/taj-group.png" 
+                alt="مجموعة التاج" 
+                className="h-10 md:h-12 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]"
+              />
+              <div className="text-right leading-tight hidden lg:block">
+                <div className="font-extrabold text-sm tracking-wide bg-gradient-to-l from-white to-zinc-400 bg-clip-text text-transparent">مجموعة التاج</div>
+              </div>
+            </Link>
           </div>
-        </div>
-      </header>
+          <nav className="flex flex-wrap md:flex-nowrap items-center justify-center w-full md:w-auto gap-x-2.5 gap-y-2 md:gap-8 text-[11px] md:text-sm font-medium text-zinc-400 px-1 pt-2 md:pt-0 border-t border-white/10 md:border-t-0">
+            <Link to="/" className="whitespace-nowrap flex items-center gap-1 px-3 md:px-5 py-1 md:py-2 rounded-full bg-[#D4AF37] text-black shadow-md font-bold hover:opacity-90 transition">
+              <span>الرئيسية</span>
+              <ArrowRight className="w-3 h-3 md:w-4 md:h-4" />
+            </Link>
+            <Link to="/about" className="whitespace-nowrap hover:text-white transition">من نحن</Link>
+            <Link to="/contact" className="whitespace-nowrap hover:text-white transition">تواصل معنا</Link>
+            <Link to="/branch" className="whitespace-nowrap text-white font-bold transition">موقع الفروع</Link>
+          </nav>
+        </header>
+      </div>
 
       <section className="relative py-16 text-center max-w-3xl mx-auto px-6">
         <div className="inline-flex items-center gap-1.5 rounded-full border border-[#D4AF37]/25 bg-[#D4AF37]/5 px-4.5 py-1.5 text-[10px] text-[#F7E7A0] backdrop-blur-lg mb-6">
