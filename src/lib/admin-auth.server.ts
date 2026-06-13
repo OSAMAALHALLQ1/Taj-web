@@ -54,7 +54,12 @@ export function validateCredentials(username: string, password: string): boolean
   if (!storedUser || !storedHash) return false;
   if (username !== storedUser) return false;
   const inputHash = hashPassword(password);
-  return crypto.timingSafeEqual(Buffer.from(inputHash), Buffer.from(storedHash));
+  const inputBuffer = Buffer.from(inputHash);
+  const storedBuffer = Buffer.from(storedHash);
+  if (inputBuffer.length !== storedBuffer.length) {
+    return false;
+  }
+  return crypto.timingSafeEqual(inputBuffer, storedBuffer);
 }
 
 export function createSession(username: string): string {
