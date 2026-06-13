@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import restaurantHero from "@/assets/restaurant-hero.jpg";
 import cafeHero from "@/assets/cafe-hero.jpg";
 
-import { Instagram, MapPin, Sparkles, UtensilsCrossed, Coffee } from "lucide-react";
+import { Instagram, MapPin, Sparkles, UtensilsCrossed, Coffee, Facebook } from "lucide-react";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -150,19 +150,39 @@ function BranchHalf({
           {ctaLabel}
           <span>←</span>
         </span>
-        <div className="mt-6 flex items-center justify-center gap-4 text-white/70 text-xs">
+        <div className="mt-6 flex items-center justify-center gap-3.5 text-white/70 text-xs flex-wrap">
           <a
             href={`https://instagram.com/${instagram}`}
             target="_blank"
             rel="noreferrer"
             onClick={(e) => e.stopPropagation()}
-            className="inline-flex items-center gap-1 hover:text-white"
+            className="inline-flex items-center gap-1 hover:text-white transition"
           >
             <Instagram className="w-3.5 h-3.5" /> @{instagram}
           </a>
-          <span className="inline-flex items-center gap-1">
-            <MapPin className="w-3.5 h-3.5" /> فرع رئيسي
-          </span>
+          <span className="opacity-30">|</span>
+          <a
+            href="https://www.facebook.com/altajRest/?locale=br_FR"
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="inline-flex items-center gap-1 hover:text-white transition"
+          >
+            <Facebook className="w-3.5 h-3.5" /> فيسبوك
+          </a>
+          <span className="opacity-30">|</span>
+          <a
+            href="https://www.tiktok.com/@tajrest"
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => e.stopPropagation()}
+            className="inline-flex items-center gap-1 hover:text-white transition"
+          >
+            <svg viewBox="0 0 24 24" className="w-3.5 h-3.5 fill-none stroke-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+            </svg>
+            تيك توك
+          </a>
         </div>
       </div>
     </Link>

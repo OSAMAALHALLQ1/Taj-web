@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { ArrowRight, Phone, MapPin, Clock, Instagram, MessageCircle, Mail, Sparkles } from "lucide-react";
+import { UnifiedFooter } from "../components/UnifiedFooter";
 
 export const Route = createFileRoute("/contact")({
   head: () => ({
@@ -210,34 +211,7 @@ function ContactPage() {
         </div>
       </main>
 
-      <footer className="border-t border-white/10 bg-black/85 relative z-10">
-        <div className="max-w-6xl mx-auto px-6 py-10 text-center text-xs text-zinc-500">
-          <div className="flex justify-center items-center gap-2.5 mb-4">
-            <img 
-              src="/logos/taj-group.png" 
-              className="w-6 h-6 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" 
-              alt="Taj Group" 
-            />
-            <span className="font-extrabold text-white text-sm">مجموعة التاج</span>
-          </div>
-          <p className="mb-4">
-            تابعونا على إنستغرام:{" "}
-            <a className="text-white font-medium hover:underline" href="https://instagram.com/altaj_rest" target="_blank" rel="noreferrer">@altaj_rest</a>
-            {" | "}
-            <a className="text-white font-medium hover:underline" href="https://instagram.com/tajmood_cafe" target="_blank" rel="noreferrer">@tajmood_cafe</a>
-          </p>
-          <p className="opacity-60">© {new Date().getFullYear()} جميع الحقوق محفوظة لمجموعة التاج</p>
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[10px] text-zinc-400">
-            <Link to="/about" className="hover:text-white transition">من نحن</Link>
-            <span className="w-1 h-1 rounded-full bg-white/20" />
-            <Link to="/contact" className="hover:text-white transition">تواصل معنا</Link>
-            <span className="w-1 h-1 rounded-full bg-white/20" />
-            <Link to="/branch" className="hover:text-white transition">موقع الفرع</Link>
-            <span className="w-1 h-1 rounded-full bg-white/20" />
-            <Link to="/" className="hover:text-white transition">الفروع</Link>
-          </div>
-        </div>
-      </footer>
+      <UnifiedFooter />
     </div>
   );
 }

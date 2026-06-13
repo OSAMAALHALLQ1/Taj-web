@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { ArrowRight, MapPin, Clock, Phone, MessageCircle, Navigation, Map, Sparkles } from "lucide-react";
+import { UnifiedFooter } from "../components/UnifiedFooter";
 
 export const Route = createFileRoute("/branch")({
   head: () => ({
@@ -241,19 +242,7 @@ function BranchPage() {
         </div>
       </main>
 
-      <footer className="border-t border-white/10 bg-black/85 relative z-10">
-        <div className="max-w-6xl mx-auto px-6 py-10 text-center text-xs text-zinc-500">
-          <div className="flex justify-center items-center gap-2.5 mb-4">
-            <img 
-              src="/logos/taj-group.png" 
-              className="w-6 h-6 object-contain drop-shadow-[0_0_8px_rgba(255,255,255,0.3)]" 
-              alt="Taj Group" 
-            />
-            <span className="font-extrabold text-white text-sm">مجموعة التاج</span>
-          </div>
-          <p className="opacity-60">© {new Date().getFullYear()} جميع الحقوق محفوظة لشركة مجموعة التاج</p>
-        </div>
-      </footer>
+      <UnifiedFooter />
     </div>
   );
 }

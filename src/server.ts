@@ -2,6 +2,7 @@ import "./lib/error-capture";
 
 import { consumeLastCapturedError } from "./lib/error-capture";
 import { renderErrorPage } from "./lib/error-page";
+import { applySecurityHeaders } from "./lib/security-headers.server";
 
 type ServerEntry = {
   fetch: (request: Request, env: unknown, ctx: unknown) => Promise<Response> | Response;
@@ -42,13 +43,26 @@ export default {
     try {
       const handler = await getServerEntry();
       const response = await handler.fetch(request, env, ctx);
-      return await normalizeCatastrophicSsrResponse(response);
+      const normalized = await normalizeCatastrophicSsrResponse(response);
+      try {
+        applySecurityHeaders(normalized.headers);
+      } catch {
+        // headers may already be sent in some edge cases
+      }
+      return normalized;
     } catch (error) {
       console.error(error);
-      return new Response(renderErrorPage(), {
+      const errorHeaders = new Headers({ "content-type": "text/html; charset=utf-8" });
+      try {
+        applySecurityHeaders(errorHeaders);
+      } catch {
+        // ignore
+      }
+      const errorResponse = new Response(renderErrorPage(), {
         status: 500,
-        headers: { "content-type": "text/html; charset=utf-8" },
+        headers: errorHeaders,
       });
+      return errorResponse;
     }
   },
 };

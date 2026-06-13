@@ -8,6 +8,9 @@ import {
 } from "lucide-react";
 import { menuData, type MenuItem, type Branch } from "@/data/menu";
 import { supabase } from "@/lib/supabase";
+import pricingDataStatic from "../data/pricing.json";
+import { adminLogin, adminLogout, adminVerify, adminCheckToken } from "@/lib/api/admin.functions";
+import { escapeHtml, sanitizeInput, sanitizeUrl } from "@/lib/sanitize";
 
 export const Route = createFileRoute("/admin")({
   head: () => ({
@@ -47,6 +50,8 @@ function AdminPage() {
   const [restaurantWhatsapp, setRestaurantWhatsapp] = useState("970593104000");
   const [cafeWhatsapp, setCafeWhatsapp] = useState("970590000002");
   const [deliveryFeeDefault, setDeliveryFeeDefault] = useState(10);
+  const [customPricing, setCustomPricing] = useState<Array<{ id: number; area: string; price: number }>>([]);
+  const [pricingSearch, setPricingSearch] = useState("");
 
   // Media Gallery & Upload State
   const [mediaImages, setMediaImages] = useState<Array<{ url: string; label: string; custom?: boolean }>>([]);
@@ -88,14 +93,26 @@ function AdminPage() {
     setMediaImages(allImages);
   }, [items]);
 
-  // Upload function
+  // Upload function with file validation
   const uploadImage = async (file: File): Promise<string> => {
+    const ALLOWED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", "image/avif"];
+
     if (file.size > 5 * 1024 * 1024) {
       throw new Error("حجم الملف يجب ألا يتجاوز 5 ميجابايت");
     }
 
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      throw new Error(`نوع الملف غير مسموح: ${file.type || "غير معروف"}. الأنواع المسموحة: JPG, PNG, WebP, GIF.`);
+    }
+
+    const blockedExts = [".exe", ".bat", ".cmd", ".sh", ".php", ".asp", ".aspx", ".jsp", ".war", ".jar"];
+    const ext = "." + (file.name.split(".").pop()?.toLowerCase() || "");
+    if (blockedExts.includes(ext)) {
+      throw new Error(`امتداد الملف ${ext} غير مسموح به للرفع.`);
+    }
+
     const fileExt = file.name.split(".").pop();
-    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 15)}.${fileExt}`;
     const filePath = `uploads/${fileName}`;
 
     try {
@@ -111,13 +128,10 @@ function AdminPage() {
 
       return publicUrl;
     } catch (err) {
-      console.warn("Supabase storage upload failed, using Base64 fallback:", err);
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = () => resolve(reader.result as string);
-        reader.onerror = () => reject(new Error("فشل تحويل الصورة لترميز Base64"));
-      });
+      console.warn("Supabase storage upload failed:", err);
+      throw new Error("فشل رفع الملف إلى الخادم. تحقق من اتصالك وحاول مرة أخرى.");
+      // NOTE: Base64 fallback removed for security — storing binary
+      // images as data URLs in localStorage is unsafe and bloated.
     }
   };
 
@@ -161,12 +175,26 @@ function AdminPage() {
   const [liveOrders, setLiveOrders] = useState(18);
   const [liveActivity, setLiveActivity] = useState<Array<{ time: string; event: string }>>([]);
 
-  // Check login state on mount
+  // Check login state on mount via server-validated session token
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const logged = localStorage.getItem("taj_admin_logged_in") === "true";
-      setAdminLoggedIn(logged);
+    async function checkSession() {
+      try {
+        const token = sessionStorage.getItem("taj_admin_token");
+        if (!token) {
+          setAdminLoggedIn(false);
+          return;
+        }
+        const result = await adminCheckToken({ data: { token } });
+        setAdminLoggedIn(result.valid);
+        if (!result.valid) {
+          sessionStorage.removeItem("taj_admin_token");
+        }
+      } catch {
+        setAdminLoggedIn(false);
+        sessionStorage.removeItem("taj_admin_token");
+      }
     }
+    checkSession();
   }, []);
 
   // Fetch all Supabase data when logged in
@@ -214,13 +242,27 @@ function AdminPage() {
           const restW = settingsDb.find(s => s.key === "taj_whatsapp_restaurant")?.value;
           const cafeW = settingsDb.find(s => s.key === "taj_whatsapp_cafe")?.value;
           const delF = settingsDb.find(s => s.key === "taj_delivery_fee")?.value;
+          const customP = settingsDb.find(s => s.key === "taj_delivery_pricing")?.value;
 
           if (restW) setRestaurantWhatsapp(restW);
           if (cafeW) setCafeWhatsapp(cafeW);
           if (delF) setDeliveryFeeDefault(Number(delF));
+          if (customP) {
+            try {
+              setCustomPricing(JSON.parse(customP));
+            } catch (err) {
+              console.error("Error parsing custom delivery pricing settings:", err);
+              setCustomPricing(pricingDataStatic);
+            }
+          } else {
+            setCustomPricing(pricingDataStatic);
+          }
+        } else {
+          setCustomPricing(pricingDataStatic);
         }
       } catch (e) {
         console.error("Error loading settings from Supabase:", e);
+        setCustomPricing(pricingDataStatic);
       }
     }
 
@@ -313,21 +355,27 @@ function AdminPage() {
         .from("settings")
         .upsert({ key: "taj_delivery_fee", value: deliveryFeeDefault.toString() });
 
-      if (errorRest || errorCafe || errorFee) {
+      const { error: errorPricing } = await supabase
+        .from("settings")
+        .upsert({ key: "taj_delivery_pricing", value: JSON.stringify(customPricing) });
+
+      if (errorRest || errorCafe || errorFee || errorPricing) {
         throw new Error("حدث خطأ أثناء حفظ الإعدادات في Supabase");
       }
 
       localStorage.setItem("taj_whatsapp_restaurant", restaurantWhatsapp.trim());
       localStorage.setItem("taj_whatsapp_cafe", cafeWhatsapp.trim());
       localStorage.setItem("taj_delivery_fee", deliveryFeeDefault.toString());
+      localStorage.setItem("taj_delivery_pricing", JSON.stringify(customPricing));
 
-      alert("تم حفظ إعدادات النظام وأرقام الفروع في قاعدة البيانات بنجاح!");
+      alert("تم حفظ إعدادات النظام وأرقام الفروع وأسعار التوصيل للمناطق بنجاح!");
     } catch (e) {
       console.error(e);
       alert("فشل حفظ الإعدادات في قاعدة البيانات، تم الحفظ محلياً في المتصفح فقط.");
       localStorage.setItem("taj_whatsapp_restaurant", restaurantWhatsapp.trim());
       localStorage.setItem("taj_whatsapp_cafe", cafeWhatsapp.trim());
       localStorage.setItem("taj_delivery_fee", deliveryFeeDefault.toString());
+      localStorage.setItem("taj_delivery_pricing", JSON.stringify(customPricing));
     }
   };
 
@@ -339,16 +387,25 @@ function AdminPage() {
       return;
     }
 
+    const sanitizedTitle = escapeHtml(sanitizeInput(newItem.title.trim()));
+    const sanitizedDesc = newItem.desc?.trim()
+      ? escapeHtml(sanitizeInput(newItem.desc.trim()))
+      : null;
+    const sanitizedPrice = sanitizeInput(newItem.price.trim());
+    const sanitizedImage = newItem.image?.trim()
+      ? sanitizeUrl(newItem.image.trim())
+      : null;
+
     try {
       const { data, error } = await supabase
         .from("menu_items")
         .insert({
           branch: newItem.branch,
           category: newItem.category,
-          title: newItem.title.trim(),
-          desc_text: newItem.desc?.trim() || null,
-          price: newItem.price.trim(),
-          image: newItem.image || null
+          title: sanitizedTitle,
+          desc_text: sanitizedDesc,
+          price: sanitizedPrice,
+          image: sanitizedImage
         })
         .select("*")
         .single();
@@ -394,16 +451,25 @@ function AdminPage() {
         return;
       }
 
+      const sanitizedTitle = escapeHtml(sanitizeInput(itemToUpdate.title.trim()));
+      const sanitizedDesc = itemToUpdate.desc?.trim()
+        ? escapeHtml(sanitizeInput(itemToUpdate.desc.trim()))
+        : null;
+      const sanitizedPrice = sanitizeInput(itemToUpdate.price.trim());
+      const sanitizedImage = itemToUpdate.image?.trim()
+        ? sanitizeUrl(itemToUpdate.image.trim())
+        : null;
+
       try {
         const { error } = await supabase
           .from("menu_items")
           .update({
             branch: itemToUpdate.branch,
             category: itemToUpdate.category,
-            title: itemToUpdate.title.trim(),
-            desc_text: itemToUpdate.desc?.trim() || null,
-            price: itemToUpdate.price.trim(),
-            image: itemToUpdate.image || null
+            title: sanitizedTitle,
+            desc_text: sanitizedDesc,
+            price: sanitizedPrice,
+            image: sanitizedImage
           })
           .eq("id", itemToUpdate.id);
 
@@ -506,23 +572,37 @@ function AdminPage() {
     }
   };
 
-  // Login handler
-  const handleLogin = (e: React.FormEvent) => {
+  // Login handler — server-side auth, NOT client-side env vars
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    const validUser = import.meta.env.VITE_ADMIN_USER || "admin";
-    const validPass = import.meta.env.VITE_ADMIN_PASS || "admin123";
-
-    if (username === validUser && password === validPass) {
+    if (!username.trim() || !password.trim()) {
+      alert("يرجى إدخال اسم المستخدم وكلمة المرور.");
+      return;
+    }
+    try {
+      const result = await adminLogin({ data: { username: username.trim(), password } });
+      if (!result.success || !result.token) {
+        alert("خطأ في اسم المستخدم أو كلمة المرور.");
+        return;
+      }
+      sessionStorage.setItem("taj_admin_token", result.token);
       setAdminLoggedIn(true);
-      localStorage.setItem("taj_admin_logged_in", "true");
-    } else {
-      alert("خطأ في اسم المستخدم أو كلمة المرور.");
+      setUsername("");
+      setPassword("");
+    } catch (err) {
+      console.error(err);
+      alert("فشل الاتصال بالخادم. تحقق من اتصالك.");
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    try {
+      await adminLogout();
+    } catch (err) {
+      console.error("Logout error:", err);
+    }
+    sessionStorage.removeItem("taj_admin_token");
     setAdminLoggedIn(false);
-    localStorage.setItem("taj_admin_logged_in", "false");
   };
 
   // Filter items based on selection
@@ -530,6 +610,12 @@ function AdminPage() {
     if (selectedBranchFilter === "all") return items;
     return items.filter((i) => i.branch === selectedBranchFilter);
   }, [items, selectedBranchFilter]);
+
+  const filteredPricing = useMemo(() => {
+    const q = pricingSearch.trim().toLowerCase();
+    if (!q) return customPricing;
+    return customPricing.filter(p => p.area.toLowerCase().includes(q));
+  }, [customPricing, pricingSearch]);
 
   // Categories list based on selected branch
   const categoriesList = useMemo(() => {
@@ -967,53 +1053,120 @@ function AdminPage() {
             )}
 
             {activeTab === "settings" && (
-              <div className="max-w-2xl liquid-glass rounded-3xl p-6 border border-white/10 space-y-6 animate-fade-up shadow-2xl">
-                <div>
-                  <h3 className="font-bold text-lg font-display text-[#D4AF37] mb-1">إعدادات قنوات الاتصال والفرع</h3>
-                  <p className="text-xs text-gray-400 font-light font-arabic">
-                    تعديل أرقام الواتساب ورسوم التوصيل الأساسية لتطبيق التاج.
-                  </p>
+              <div className="max-w-3xl space-y-6 animate-fade-up">
+                
+                {/* General Settings */}
+                <div className="liquid-glass rounded-3xl p-6 border border-white/10 space-y-6 shadow-2xl">
+                  <div>
+                    <h3 className="font-bold text-lg font-display text-[#D4AF37] mb-1">إعدادات قنوات الاتصال والفرع</h3>
+                    <p className="text-xs text-gray-400 font-light font-arabic">
+                      تعديل أرقام الواتساب ورسوم التوصيل الأساسية لتطبيق التاج.
+                    </p>
+                  </div>
+
+                  <div className="space-y-4 text-right">
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5">رقم واتساب مطعم التاج (شامل رمز الدولة بدون +)</label>
+                      <input 
+                        type="text" 
+                        value={restaurantWhatsapp}
+                        onChange={(e) => setRestaurantWhatsapp(e.target.value)}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all font-mono"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5">رقم واتساب تاج مود كافيه (شامل رمز الدولة بدون +)</label>
+                      <input 
+                        type="text" 
+                        value={cafeWhatsapp}
+                        onChange={(e) => setCafeWhatsapp(e.target.value)}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all font-mono"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5">رسوم التوصيل الأساسية الافتراضية (₪)</label>
+                      <input 
+                        type="number" 
+                        value={deliveryFeeDefault}
+                        onChange={(e) => setDeliveryFeeDefault(Number(e.target.value))}
+                        className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all font-mono"
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                <div className="space-y-4 text-right">
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5">رقم واتساب مطعم التاج (شامل رمز الدولة بدون +)</label>
-                    <input 
-                      type="text" 
-                      value={restaurantWhatsapp}
-                      onChange={(e) => setRestaurantWhatsapp(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all font-mono"
-                    />
+                {/* Regional Delivery Pricing Settings */}
+                <div className="liquid-glass rounded-3xl p-6 border border-white/10 space-y-6 shadow-2xl">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <h3 className="font-bold text-lg font-display text-[#D4AF37] mb-1">تسعير رسوم التوصيل للمناطق</h3>
+                      <p className="text-xs text-gray-400 font-light font-arabic">
+                        التحكم في تسعير رسوم التوصيل لكل من الـ {customPricing.length} منطقة تفصيلياً وبدون استثناء.
+                      </p>
+                    </div>
+                    
+                    {/* Search bar for regions */}
+                    <div className="relative w-full sm:w-64">
+                      <Search className="absolute right-3 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-gray-500" />
+                      <input
+                        type="text"
+                        value={pricingSearch}
+                        onChange={(e) => setPricingSearch(e.target.value)}
+                        placeholder="ابحث عن منطقة..."
+                        className="w-full bg-white/5 border border-white/10 rounded-xl py-2.5 pr-9 pl-3 text-xs text-white focus:border-[#D4AF37] outline-none transition-all"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5">رقم واتساب تاج مود كافيه (شامل رمز الدولة بدون +)</label>
-                    <input 
-                      type="text" 
-                      value={cafeWhatsapp}
-                      onChange={(e) => setCafeWhatsapp(e.target.value)}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all font-mono"
-                    />
+                  <div className="border border-white/5 rounded-2xl max-h-[300px] overflow-y-auto divide-y divide-white/5 p-2 bg-black/40 scrollbar-hide">
+                    {filteredPricing.length === 0 ? (
+                      <p className="text-center text-xs text-zinc-500 py-8">لم يتم العثور على مناطق تطابق بحثك</p>
+                    ) : (
+                      filteredPricing.map((region) => (
+                        <div key={region.id} className="flex items-center justify-between py-2 px-3 hover:bg-white/[0.02] transition-all">
+                          <span className="text-xs font-semibold text-zinc-300">{region.area}</span>
+                          <div className="flex items-center gap-2">
+                            <input
+                              type="number"
+                              value={region.price}
+                              onChange={(e) => {
+                                const newPrice = Number(e.target.value);
+                                setCustomPricing(prev => prev.map(p => p.id === region.id ? { ...p, price: newPrice } : p));
+                              }}
+                              className="w-20 bg-white/5 border border-white/10 rounded-lg py-1 px-2 text-center text-xs text-white focus:border-[#D4AF37] outline-none transition-all font-mono"
+                            />
+                            <span className="text-[10px] text-zinc-500">₪</span>
+                          </div>
+                        </div>
+                      ))
+                    )}
                   </div>
-
-                  <div>
-                    <label className="block text-[10px] font-bold text-gray-400 uppercase mb-1.5">رسوم التوصيل الأساسية الافتراضية (₪)</label>
-                    <input 
-                      type="number" 
-                      value={deliveryFeeDefault}
-                      onChange={(e) => setDeliveryFeeDefault(Number(e.target.value))}
-                      className="w-full bg-white/5 border border-white/10 rounded-xl py-3 px-4 text-xs text-white focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] outline-none transition-all font-mono"
-                    />
+                  
+                  <div className="flex gap-4">
+                    <button 
+                      onClick={handleSaveSettings}
+                      className="flex-1 bg-[#D4AF37] text-black font-bold py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:opacity-95 text-xs flex items-center justify-center gap-2 cursor-pointer"
+                    >
+                      <Settings className="w-4 h-4" />
+                      <span>حفظ الإعدادات وأسعار التوصيل</span>
+                    </button>
+                    
+                    <button 
+                      onClick={() => {
+                        if (confirm("هل أنت متأكد من رغبتك في إعادة تعيين كافة أسعار المناطق للقيم الافتراضية؟")) {
+                          setCustomPricing(pricingDataStatic);
+                          alert("تم استيراد الأسعار الافتراضية، يرجى النقر على زر الحفظ لتخزينها.");
+                        }
+                      }}
+                      className="px-5 bg-white/5 border border-white/10 text-white font-bold py-3.5 rounded-xl hover:bg-white/10 transition-all text-xs cursor-pointer"
+                    >
+                      استعادة الافتراضي
+                    </button>
                   </div>
-
-                  <button 
-                    onClick={handleSaveSettings}
-                    className="w-full bg-[#D4AF37] text-black font-bold py-3.5 rounded-xl transition-all shadow-[0_0_20px_rgba(212,175,55,0.3)] hover:shadow-[0_0_30px_rgba(212,175,55,0.5)] hover:opacity-95 text-xs flex items-center justify-center gap-2 mt-4 cursor-pointer"
-                  >
-                    <Settings className="w-4 h-4" />
-                    <span>حفظ إعدادات الفروع والأسعار</span>
-                  </button>
                 </div>
+
               </div>
             )}
 

@@ -2,13 +2,14 @@ import { useMemo, useState, useEffect } from "react";
 import { Link } from "@tanstack/react-router";
 import { 
   Search, ArrowRight, MessageCircle, ShoppingBag, Plus, Minus, 
-  Trash2, X, MapPin, Phone, User, Clock, ClipboardList, Info 
+  Trash2, X, MapPin, Phone, User, Clock, ClipboardList, Info, Instagram, Facebook 
 } from "lucide-react";
 import { categoryImages, menuData, type Branch, type MenuItem } from "@/data/menu";
 import { supabase } from "@/lib/supabase";
 import { AnimatedLogoLoader } from "./AnimatedLogoLoader";
 
 import pricingData from "../data/pricing.json";
+import { escapeHtml, sanitizeInput, sanitizePhone, sanitizeUrl } from "@/lib/sanitize";
 
 interface Props {
   branch: Branch;
@@ -37,6 +38,51 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
 
   // Load initial items
   const [items, setItemsState] = useState<MenuItem[]>(menuData);
+
+  // Custom pricing list state initialized with static pricingData
+  const [pricingList, setPricingList] = useState<Array<{ id: number; area: string; price: number }>>(pricingData);
+
+  // Load customized pricing from Supabase settings
+  useEffect(() => {
+    async function loadPricing() {
+      try {
+        const { data, error } = await supabase
+          .from("settings")
+          .select("value")
+          .eq("key", "taj_delivery_pricing")
+          .single();
+
+        if (error) throw error;
+        if (data?.value) {
+          const parsed = JSON.parse(data.value);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            setPricingList(parsed);
+            localStorage.setItem("taj_delivery_pricing", data.value);
+          }
+        }
+      } catch (e) {
+        console.error("Error loading delivery pricing from Supabase, using local cache:", e);
+        const saved = localStorage.getItem("taj_delivery_pricing");
+        if (saved) {
+          try {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              setPricingList(parsed);
+            }
+          } catch (err) {
+            console.error("Error parsing local pricing:", err);
+          }
+        }
+      }
+    }
+    loadPricing();
+  }, []);
+
+  // Time-based lock check (12:00 AM - 9:00 AM)
+  const isStoreClosed = useMemo(() => {
+    const hours = new Date().getHours();
+    return hours >= 0 && hours < 9;
+  }, []);
   
   // Cart state
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -228,8 +274,8 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
   // Find selected delivery area
   const selectedArea = useMemo(() => {
     if (orderForm.deliveryType !== "delivery") return null;
-    return pricingData.find((a) => a.id === Number(orderForm.areaId)) || null;
-  }, [orderForm.deliveryType, orderForm.areaId]);
+    return pricingList.find((a) => a.id === Number(orderForm.areaId)) || null;
+  }, [orderForm.deliveryType, orderForm.areaId, pricingList]);
 
   const deliveryFee = selectedArea ? selectedArea.price : 0;
   const cartTotal = cartSubtotal + deliveryFee;
@@ -237,9 +283,9 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
   // Search filter for pricing areas
   const filteredAreas = useMemo(() => {
     const q = areaSearch.trim().toLowerCase();
-    if (!q) return pricingData;
-    return pricingData.filter((a) => a.area.toLowerCase().includes(q));
-  }, [areaSearch]);
+    if (!q) return pricingList;
+    return pricingList.filter((a) => a.area.toLowerCase().includes(q));
+  }, [areaSearch, pricingList]);
 
   // Gaza mobile number validation: Starts with 059 or 056 and is exactly 10 digits total
   const validateGazaPhone = (phone: string) => {
@@ -260,7 +306,30 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
     }
   };
 
+  // Client-side rate limiting for order submissions
+  const orderTimestamps: number[] = [];
+  const MAX_ORDERS_PER_MINUTE = 3;
+
+  const checkClientRateLimit = (): boolean => {
+    const now = Date.now();
+    const windowMs = 60_000;
+    const recent = orderTimestamps.filter(t => now - t < windowMs);
+    orderTimestamps.length = 0;
+    orderTimestamps.push(...recent, now);
+    if (recent.length >= MAX_ORDERS_PER_MINUTE) {
+      alert(`طلبات كثيرة جداً. الرجاء الانتظار ${Math.ceil((recent[0] + windowMs - now) / 1000)} ثانية قبل المحاولة مرة أخرى.`);
+      return false;
+    }
+    return true;
+  };
+
   const sendOrderToWhatsApp = () => {
+    if (!checkClientRateLimit()) return;
+
+    if (isStoreClosed) {
+      alert("عذراً، نظام الطلبات مغلق حالياً. نستقبل طلباتكم يومياً من الساعة 9:00 صباحاً وحتى الساعة 12:00 منتصف الليل.");
+      return;
+    }
     if (!orderForm.name.trim() || orderForm.name.trim().length < 3) {
       alert("يرجى إدخال اسم صحيح وثلاثي على الأقل.");
       return;
@@ -373,28 +442,37 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
 
     const textMessage = messageParts.filter(part => part !== "").join("\n");
     const encodedText = encodeURIComponent(textMessage);
-    const whatsappUrl = `https://wa.me/${whatsappNum}?text=${encodedText}`;
+    const cleanWhatsappNum = whatsappNum.replace(/[^\d]/g, "").slice(0, 15);
+    const whatsappUrl = `https://wa.me/${cleanWhatsappNum}?text=${encodedText}`;
 
-    // Save order to Supabase
+    // Note: Order is saved above with sanitized data
+    // Redirect to WhatsApp
+    window.open(whatsappUrl, "_blank");
+
+    // Save order to Supabase with sanitized data
+    const sanitizedName = escapeHtml(sanitizeInput(orderForm.name.trim()));
+    const sanitizedPhone = sanitizePhone(orderForm.phone.trim());
+    const sanitizedAddress = escapeHtml(sanitizeInput(
+      orderForm.deliveryType === "delivery"
+        ? `${selectedArea?.area} - ${orderForm.detailedAddress.trim()}`
+        : "استلام من الفرع"
+    ));
+    const sanitizedNotes = escapeHtml(sanitizeInput(orderForm.notes.trim()));
+
     supabase.from("orders").insert({
       order_ref: orderRef,
-      customer_name: orderForm.name.trim(),
-      customer_phone: orderForm.phone.trim(),
+      customer_name: sanitizedName,
+      customer_phone: sanitizedPhone,
       delivery_type: orderForm.deliveryType,
-      address: orderForm.deliveryType === "delivery" 
-        ? `${selectedArea?.area} - ${orderForm.detailedAddress.trim()}` 
-        : "استلام من الفرع",
+      address: sanitizedAddress,
       items: cart,
       subtotal: cartSubtotal,
       delivery_fee: deliveryFee,
       total: cartTotal,
-      notes: orderForm.notes.trim() || null
+      notes: sanitizedNotes || null
     }).then(({ error }) => {
       if (error) console.error("Error saving order to Supabase:", error);
     });
-
-    // Redirect to WhatsApp
-    window.open(whatsappUrl, "_blank");
 
     // Add to admin live logs in localStorage (as fallback/local logging)
     const orderTime = new Date().toLocaleTimeString("ar-EG", { hour: "2-digit", minute: "2-digit", second: "2-digit" }).split(" ")[0];
@@ -430,6 +508,12 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
 
   return (
     <div className={`${themeClass} min-h-screen relative`} dir="rtl">
+      {isStoreClosed && (
+        <div className="bg-red-950/90 border-b border-red-500/30 text-white text-center py-3.5 px-4 text-xs font-bold font-arabic flex items-center justify-center gap-2 relative z-50 animate-fade-down">
+          <Clock className="w-4 h-4 text-[#D4AF37] animate-pulse" />
+          <span>عذراً، نظام الطلبات مغلق حالياً. نستقبل طلباتكم يومياً من الساعة 9:00 صباحاً وحتى الساعة 12:00 منتصف الليل. الفرع مغلق الآن وسنعاود الخدمة في تمام الساعة 9:00 صباحاً!</span>
+        </div>
+      )}
       <AnimatedLogoLoader isLoading={pageLoading} theme={branch} />
       {/* Header Container */}
       <div className="relative z-50 px-4 max-w-6xl mx-auto w-full transition-all mt-4">
@@ -1063,7 +1147,11 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
                 </div>
 
                 <div className="grid grid-cols-1 gap-2 pt-2">
-                  {checkoutStep === 1 ? (
+                  {isStoreClosed ? (
+                    <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-3 rounded-xl text-center text-xs font-bold font-arabic leading-relaxed">
+                      عذراً، نظام الطلبات مغلق حالياً. الفرع يستقبل طلباتكم يومياً من الساعة 9:00 صباحاً وحتى الساعة 12:00 منتصف الليل.
+                    </div>
+                  ) : checkoutStep === 1 ? (
                     <button 
                       onClick={() => setCheckoutStep(2)}
                       className="w-full bg-accent text-accent-foreground font-bold py-3.5 rounded-xl transition-all shadow-md text-sm hover:opacity-95 flex items-center justify-center gap-2"
@@ -1096,12 +1184,24 @@ export function MenuView({ branch, brandName, tagline, whatsapp, instagram, them
             <img src="/logos/taj-group.png" className="w-8 h-8 object-contain drop-shadow-md" alt="Taj Group" />
             <span className="font-bold text-foreground">{brandName}</span>
           </div>
-          <p>
-            تابعنا على إنستغرام:{" "}
-            <a className="text-accent hover:underline" href={`https://instagram.com/${instagram}`} target="_blank" rel="noreferrer">
-              @{instagram}
+          <div className="flex justify-center items-center gap-6 mt-4 mb-4 text-xs flex-wrap">
+            <a className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-accent transition font-semibold" href={`https://instagram.com/${instagram}`} target="_blank" rel="noreferrer">
+              <Instagram className="w-4 h-4" />
+              <span>إنستغرام</span>
             </a>
-          </p>
+            <span className="w-1.5 h-1.5 rounded-full bg-border" />
+            <a className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-accent transition font-semibold" href="https://www.facebook.com/altajRest/?locale=br_FR" target="_blank" rel="noreferrer">
+              <Facebook className="w-4 h-4" />
+              <span>فيسبوك</span>
+            </a>
+            <span className="w-1.5 h-1.5 rounded-full bg-border" />
+            <a className="inline-flex items-center gap-1.5 text-muted-foreground hover:text-accent transition font-semibold" href="https://www.tiktok.com/@tajrest" target="_blank" rel="noreferrer">
+              <svg viewBox="0 0 24 24" className="w-4 h-4 fill-none stroke-current" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+              </svg>
+              <span>تيك توك</span>
+            </a>
+          </div>
 
           <p className="mt-3 opacity-70">© {new Date().getFullYear()} مجموعة التاج</p>
         </div>
